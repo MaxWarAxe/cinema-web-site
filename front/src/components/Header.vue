@@ -2,13 +2,19 @@
     <header>
         <div class="header_container">
             <img class="logo" src="@/assets/images/logo.png" alt="logo">
-            <ul>
+            <ul class="w-full">
                 <li><a class="underline_effect">
                         <RouterLink to="/films">Расписание</RouterLink>
                     </a></li>
                 <li><a class="underline_effect">
                         <RouterLink to="/contacts">Контакты</RouterLink>
                     </a></li>
+                <li><a class="underline_effect">
+                    <RouterLink to="/admin">Админ панель</RouterLink>
+                </a></li>
+                <li class="float-right"><a class="underline_effect">
+                    <RouterLink to="/login">Вход</RouterLink>
+                </a></li>
             </ul>
         </div>
     </header>

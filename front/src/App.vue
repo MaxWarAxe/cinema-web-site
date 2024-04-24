@@ -7,17 +7,17 @@ import FilmList from './views/FilmList.vue';
 
   <Header></Header>
   <main>
-    <FilmList></FilmList>
+    <RouterView/>
   </main>
 
 </template>
 
 <style scoped>
-main {
-  width: 100%;
-  height: 1000px;
-  display: flex;
-  justify-content: center;
+  main {
+    width: 100%;
+    height: 1000px;
+    display: flex;
+    justify-content: center;
 
-}
+  }
 </style>
