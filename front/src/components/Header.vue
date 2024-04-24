@@ -9,12 +9,17 @@
                 <li><a class="underline_effect">
                         <RouterLink to="/contacts">Контакты</RouterLink>
                     </a></li>
-                <li><a class="underline_effect">
-                    <RouterLink to="/admin">Админ панель</RouterLink>
-                </a></li>
+                
                 <li class="float-right"><a class="underline_effect">
                     <RouterLink to="/login">Вход</RouterLink>
                 </a></li>
+                <li class="float-right"><a class="underline_effect">
+                    <RouterLink to="/admin">Админ панель</RouterLink>
+                </a></li>
+                <li class="float-right"><a class="underline_effect">
+                    <RouterLink to="/report">Отчеты</RouterLink>
+                </a></li>
+                
             </ul>
         </div>
     </header>
