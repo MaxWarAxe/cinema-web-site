@@ -13,6 +13,6 @@
     height: 2px;
     border-radius: 1px;
     background-color: rgb(136, 136, 136);
-    margin-bottom: 50px;
+    display: block;
 }
 </style>
