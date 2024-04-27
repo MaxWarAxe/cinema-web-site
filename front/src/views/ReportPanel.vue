@@ -1,10 +1,10 @@
 <template>
     <div class="panel">
-        <ButtonCustom class="buttonA" text="Отчет о прибыли фильмов за промежуток времени"/>
+        <RouterLink to="/report/film"><ButtonCustom class="buttonA" text="Отчет о прибыли фильмов за промежуток времени"/></RouterLink>
         <FilmSepLine class="mb-5"/>
-        <ButtonCustom class="buttonA" text="Отчет о прибыли показов с выбором фильма и промежутка времени"/>
+        <RouterLink to="/report/show"><ButtonCustom  class="buttonA" text="Отчет о прибыли показов с выбором фильма и промежутка времени"/></RouterLink>
         <FilmSepLine class="mb-5"/>
-        <ButtonCustom class="buttonA" text="Отчет о загруженности залов за промежуток времени"/>
+        <RouterLink to="/report/capacity"><ButtonCustom class="buttonA" text="Отчет о загруженности залов за промежуток времени"> </ButtonCustom></RouterLink>
     </div>
 </template>
 
