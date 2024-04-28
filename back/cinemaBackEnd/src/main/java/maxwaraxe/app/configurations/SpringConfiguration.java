@@ -1,0 +1,52 @@
+package maxwaraxe.app.configurations;
+
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.SerializationFeature;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.PropertySource;
+import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.jdbc.datasource.DriverManagerDataSource;
+import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
+
+import javax.sql.DataSource;
+import java.text.SimpleDateFormat;
+import java.util.Locale;
+
+@Configuration
+@PropertySource("classpath:config.properties")
+public class SpringConfiguration implements WebMvcConfigurer {
+
+    @Value("${postgres.dbname}") String dbname;
+    @Value("${postgres.user}")String user;
+    @Value("${postgres.password}")String password;
+    @Value("${postgres.host}")String host;
+    @Value("${postgres.port}") String port;
+
+    @Bean
+    public DataSource dataSource(){
+        DriverManagerDataSource dataSource = new DriverManagerDataSource();
+
+
+
+        dataSource.setDriverClassName("org.postgresql.Driver");
+        dataSource.setUrl("jdbc:postgresql://" + host + ":" + port + "/" + dbname);
+        dataSource.setUsername(user);
+        dataSource.setPassword(password);
+        return dataSource;
+    }
+    @Bean
+    public JdbcTemplate jdbcTemplate(){
+        return new JdbcTemplate(dataSource());
+    }
+
+    @Bean
+    public ObjectMapper mapper(){
+        ObjectMapper objectMapper = new ObjectMapper();
+        objectMapper.setDateFormat(new SimpleDateFormat("dd-MM-yyyy HH:mm"));
+        objectMapper.enable(SerializationFeature.INDENT_OUTPUT);
+        return objectMapper;
+    }
+
+}
