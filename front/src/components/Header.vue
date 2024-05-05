@@ -4,22 +4,22 @@
             <img class="logo" src="@/assets/images/logo.png" alt="logo">
             <ul class="w-full">
                 <li><a class="underline_effect">
-                        <RouterLink to="/films">Расписание</RouterLink>
+                        <RouterLink to="/shows">Расписание</RouterLink>
                     </a></li>
                 <li><a class="underline_effect">
-                        <RouterLink to="/contacts">Контакты</RouterLink>
+                        <RouterLink to="/films">Фильмы</RouterLink>
                     </a></li>
-                
+
                 <li class="float-right"><a class="underline_effect">
-                    <RouterLink to="/login">Вход</RouterLink>
-                </a></li>
+                        <RouterLink to="/login">Вход</RouterLink>
+                    </a></li>
                 <li class="float-right"><a class="underline_effect">
-                    <RouterLink to="/admin">Админ панель</RouterLink>
-                </a></li>
+                        <RouterLink to="/admin">Админ панель</RouterLink>
+                    </a></li>
                 <li class="float-right"><a class="underline_effect">
-                    <RouterLink to="/report">Отчеты</RouterLink>
-                </a></li>
-                
+                        <RouterLink to="/report">Отчеты</RouterLink>
+                    </a></li>
+
             </ul>
         </div>
     </header>

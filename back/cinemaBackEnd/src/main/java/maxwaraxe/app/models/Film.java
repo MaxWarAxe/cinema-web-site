@@ -1,6 +1,8 @@
 package maxwaraxe.app.models;
 
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 public class Film {
     private int id;
@@ -9,17 +11,68 @@ public class Film {
     private int duration;
     private int ageRating;
     private String imagePath;
+    private List<String> genres = new ArrayList<String>();
+    private List<String> directors = new ArrayList<String>();
+    private List<String> actors = new ArrayList<String>();
+    private List<String> countries = new ArrayList<String>();
 
-    public Film() {}
-
-    public Film(int id, String name, Date worldPremiereDate, int duration, int ageRating, String imagePath) {
+    public Film(int id, String name, Date worldPremiereDate, int duration, int ageRating, String imagePath, List<String> genres, List<String> directors, List<String> actors, List<String> countries, String description) {
         this.id = id;
         this.name = name;
         this.worldPremiereDate = worldPremiereDate;
         this.duration = duration;
         this.ageRating = ageRating;
         this.imagePath = imagePath;
+        this.genres = genres;
+        this.directors = directors;
+        this.actors = actors;
+        this.countries = countries;
+        this.description = description;
     }
+
+    public List<String> getDirectors() {
+        return directors;
+    }
+
+    public void setDirectors(List<String> directors) {
+        this.directors = directors;
+    }
+
+    public List<String> getActors() {
+        return actors;
+    }
+
+    public void setActors(List<String> actors) {
+        this.actors = actors;
+    }
+
+    public List<String> getCountries() {
+        return countries;
+    }
+
+    public void setCountries(List<String> countries) {
+        this.countries = countries;
+    }
+
+    public List<String> getGenres() {
+        return genres;
+    }
+
+    public void setGenres(List<String> genres) {
+        this.genres = genres;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    private String description;
+
+    public Film() {}
 
     public int getId() {
         return id;

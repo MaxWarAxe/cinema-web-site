@@ -1,23 +1,22 @@
 <script setup>
 import Header from './components/Header.vue';
-import FilmList from './views/FilmList.vue';
+import ShowList from './views/ShowList.vue';
 </script>
 
 <template>
 
-  <Header></Header>
-  <main>
-    <RouterView/>
-  </main>
+    <Header></Header>
+    <main>
+        <RouterView />
+    </main>
 
 </template>
 
 <style scoped>
-  main {
+main {
     width: 100%;
     height: 1000px;
     display: flex;
     justify-content: center;
-
-  }
+}
 </style>
