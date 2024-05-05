@@ -1,5 +1,5 @@
 <script setup>
-
+import router from '@/router/router';
 import FilmButton from '@/components/FilmButton.vue';
 import { ref, watch } from 'vue'
 import axios from 'axios'
@@ -21,6 +21,10 @@ axios({
         console.log(response.data);
         film_list.value = response.data;
         console.log(film_list.value)
+        for (let i = 0; i < film_list.value.length; i++) {
+            console.log(i)
+        }
+
     })
     .catch(function (error) {
         console.log(error);
@@ -32,7 +36,12 @@ axios({
 
 <template>
     <div class="panel">
-        <FilmButton class="mr-11 mb-11" v-for="film in film_list" :film_name="film.name" />
+        <RouterLink v-for="film in film_list" :to="'/films/' + film.id">
+            <FilmButton class="mr-11 mb-11" :film_name="film.name" :film_genres="film.genres" :film_id="film.id"
+                :film_image_path="'http://localhost:8080/films/image?path=' + film.imagePath">
+            </FilmButton>
+        </RouterLink>
+
     </div>
 </template>
 

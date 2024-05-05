@@ -1,24 +1,41 @@
 <template>
     <div class="card cursor-pointer h-96 w-fit inline-block rounded-3xl relative">
-        <img class="film_img rounded-3xl" src="@/assets/images/example.png" alt="">
-        <div class="rect rounded-bl-3xl rounded-br-3xl pt-5">
-            <div class="text-white text-center text-lg mb-10">
-                {{ film_name }}
+        <slot>
+            <img class="film_img rounded-3xl " :src="film_image_path" alt="">
+            <div class="rect rounded-bl-3xl rounded-br-3xl pt-5">
+                <div class="text-white text-center text-lg mb-10">
+                    {{ film_name }}
+                </div>
+                <div class="text-white text-center text-lg genres">{{ film_genres.join(", ") }}</div>
             </div>
-            <div class="text-white text-center text-lg genres">Драма, боевик</div>
-        </div>
+        </slot>
+
     </div>
+
+
 </template>
 
 <script setup>
+import { ref } from 'vue'
+
+
+
 const props = defineProps({
     film_name: String,
+    film_genres: Array,
+    film_image_path: String
 })
+
 </script>
 
 <style scoped>
 .film_img {
     height: 100%;
+}
+
+.cropped {
+    height: 100%;
+    clip-path: inset(20px 50px 10px 0 round 50px);
 }
 
 .rect {

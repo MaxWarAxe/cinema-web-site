@@ -1,6 +1,8 @@
 package maxwaraxe.app.mappers;
 
 import maxwaraxe.app.models.Film;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.annotation.PropertySource;
 import org.springframework.jdbc.core.RowMapper;
 
 import java.sql.ResultSet;
@@ -9,7 +11,13 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+@PropertySource("classpath:config.properties")
 public class FilmMapper implements RowMapper<Film> {
+
+    @Value("ip")
+    private String ip;
+    @Value("port")
+    private String port;
 
     @Override
     public Film mapRow(ResultSet rs, int rowNum) throws SQLException {
@@ -22,6 +30,7 @@ public class FilmMapper implements RowMapper<Film> {
         film.setWorldPremiereDate(rs.getDate("film_world_premiere_date"));
         film.setImagePath(rs.getString("film_image_path"));
         film.setDescription(rs.getString("film_description"));
+        film.setGenres(Arrays.asList((String[])rs.getArray("genre_list").getArray()));
         film.setCountries(Arrays.asList((String[])rs.getArray("country_list").getArray()));
         film.setDirectors(Arrays.asList((String[])rs.getArray("director_list").getArray()));
         film.setActors(Arrays.asList((String[])rs.getArray("actor_list").getArray()));

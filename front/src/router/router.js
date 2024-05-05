@@ -1,4 +1,4 @@
-import { createMemoryHistory, createRouter } from 'vue-router';
+import { createMemoryHistory, createRouter,createWebHistory } from 'vue-router';
 
 import ShowList from '@/views/ShowList.vue';
 import FilmList from '@/views/FilmList.vue';
@@ -8,11 +8,13 @@ import ReportPanel from '@/views/ReportPanel.vue';
 import FilmReport from '@/views/reports/FilmReport.vue';
 import ShowReport from '@/views/reports/ShowReport.vue';
 import HallCapacityReport from '@/views/reports/HallCapacityReport.vue';
+import Film from '@/views/Film.vue';
 
 const routes = [
     { path: '/shows', component: ShowList },
     { path: '/', component: ShowList },
     { path: '/films', component: FilmList },
+    { path: '/films/:id', component: Film },
     { path: '/admin', component: AdminPanel },
     { path: '/login', component: Login },
     { path: '/report', component: ReportPanel },
@@ -23,7 +25,7 @@ const routes = [
 ];
 
 const router = createRouter({
-    history: createMemoryHistory(),
+    history: createWebHistory(),
     routes
 });
 
