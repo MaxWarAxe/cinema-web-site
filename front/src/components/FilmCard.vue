@@ -1,25 +1,57 @@
 <template>
-    <div class="film_container">
-        <img class="film_img" src="@/assets/images/example.png" alt="">
+    <div v-if="loaded" class="film_container">
+        <img class="film_img" :src="'http://localhost:8080/films/image?path=' + film.imagePath" alt="">
         <div class="film_desc">
-            <div class="age_restrict">18+</div>
-            <div class="film_name">Крутой фильм 2</div>
-            <div class="film_genres">Драмма, Боевик</div>
-            <div class="film_duration">2 час 30 мин.</div>
+            <div class="age_restrict">{{ film.ageRating + '+' }}</div>
+            <div class="film_name">{{ film.name }}</div>
+            <div class="film_genres">{{ film.genres.join(", ") }}</div>
+            <div class="film_duration">{{ getHM(film.duration) }}</div>
         </div>
         <div class="film_shows">
-            <div class="show_container">
-                <div class="time_and_money">
-                    <div class="time">10:20</div>
-                    <div class="money">от 150Р</div>
-                </div>
-                <div class="hall_type">2D</div>
-            </div>
+            <ShowButton v-for="i in 20" />
         </div>
+
     </div>
 </template>
 
 <script setup>
+import ShowButton from './ShowButton.vue';
+import axios from 'axios';
+
+import getHM from "@/functions/minsToHM";
+import { ref, watch } from 'vue';
+
+const props = defineProps({
+    filmId: Number
+})
+
+watch(() => props.filmId, (newFilmId, oldFilmId) => {
+    getFilm()
+})
+
+const film = ref()
+let loaded = ref(false)
+
+getFilm()
+function getFilm() {
+    axios({
+        method: 'get',
+        url: 'http://localhost:8080/films/' + props.filmId,
+        headers: {
+            "Content-Type": "application/json",
+        }
+    })
+        .then(function (response) {
+            film.value = response.data;
+            loaded.value = true;
+            console.log(film.value)
+        })
+        .catch(function (error) {
+            console.log(error);
+        });
+
+}
+
 
 </script>
 

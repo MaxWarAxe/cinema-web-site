@@ -4,7 +4,7 @@
             <img class="logo" src="@/assets/images/logo.png" alt="logo">
             <ul class="w-full">
                 <li><a class="underline_effect">
-                        <RouterLink to="/shows">Расписание</RouterLink>
+                        <RouterLink :to="'/shows/' + new Date().toLocaleDateString('en-CA')">Расписание</RouterLink>
                     </a></li>
                 <li><a class="underline_effect">
                         <RouterLink to="/films">Фильмы</RouterLink>
@@ -38,7 +38,6 @@ header {
     display: flex;
     align-items: center;
     justify-content: center;
-    margin-bottom: 20px;
 }
 
 .header_container {

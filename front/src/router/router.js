@@ -11,7 +11,7 @@ import HallCapacityReport from '@/views/reports/HallCapacityReport.vue';
 import Film from '@/views/Film.vue';
 
 const routes = [
-    { path: '/shows', component: ShowList },
+    { path: '/shows/:date', component: ShowList },
     { path: '/', component: ShowList },
     { path: '/films', component: FilmList },
     { path: '/films/:id', component: Film },
