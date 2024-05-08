@@ -5,7 +5,7 @@ import DayButton from '@/components/DayButton.vue';
 import { useRouter, useRoute } from 'vue-router';
 import axios from 'axios';
 import { ref, watch } from 'vue'
-
+import serverUrl from "@/config"
 
 let date = new Date()
 let dateList = ref([])
@@ -25,7 +25,7 @@ watch(() => route.params.date, (newDate, oldDate) => {
 function getShows() {
     axios({
         method: 'get',
-        url: 'http://localhost:8080/shows/' + router.currentRoute.value.params.date,
+        url: serverUrl() + '/shows/' + router.currentRoute.value.params.date,
         headers: {
             "Content-Type": "application/json",
         }
@@ -55,7 +55,7 @@ getShows()
         </div>
         <FilmSepLine class="mb-10" />
         <div v-for="film in filmList">
-            <FilmCard :film-id="film[0]" />
+            <FilmCard :film-id="film[0]" :show-list="film[1]" />
             <FilmSepLine class="mb-10" />
         </div>
 

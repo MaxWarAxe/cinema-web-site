@@ -1,15 +1,19 @@
 <template>
     <div class="show_container">
         <div class="time_and_money">
-            <div class="time">10:20</div>
-            <div class="money">от 150Р</div>
+            <div class="time">{{ time }}</div>
+            <div class="money">{{ 'от ' + money + 'Р' }}</div>
         </div>
         <div class="hall_type">2D</div>
     </div>
 </template>
 
 <script setup>
-
+let props = defineProps({
+    time: Date,
+    money: Number,
+    hall_type: String
+})
 </script>
 
 <style scoped>

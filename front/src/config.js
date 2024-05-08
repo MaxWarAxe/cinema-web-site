@@ -1,4 +1,8 @@
 const host = "localhost"
-const port = "8080"
+const port = "9090"
 
-const url = "http://" + host + ":" + port
+function serverUrl() {
+    return "http://" + host + ":" + port
+} 
+
+export default serverUrl

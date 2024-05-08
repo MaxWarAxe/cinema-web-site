@@ -17,7 +17,7 @@ public class ShowMapper implements RowMapper<Show> {
         show.setFilmId(rs.getInt("film_id"));
         show.setBasePrice(Float.parseFloat(rs.getString("show_base_price")));
         show.setDuration(rs.getInt("show_duration"));
-        show.setDate(rs.getDate("show_datetime"));
+        show.setDate(rs.getTimestamp("show_datetime"));
         return show;
     }
 }

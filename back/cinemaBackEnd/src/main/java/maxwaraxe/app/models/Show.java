@@ -1,6 +1,6 @@
 package maxwaraxe.app.models;
 
-import java.sql.Date;
+import java.sql.Timestamp;
 
 public class Show {
     private int id;
@@ -8,9 +8,9 @@ public class Show {
     private int filmId;
     private float basePrice;
     private int duration;
-    private Date date;
+    private Timestamp date;
 
-    public Show(int id, int hallNumber, int filmId, int basePrice, int duration, Date date) {
+    public Show(int id, int hallNumber, int filmId, int basePrice, int duration, Timestamp date) {
         this.id = id;
         this.hallNumber = hallNumber;
         this.filmId = filmId;
@@ -60,11 +60,11 @@ public class Show {
         this.duration = duration;
     }
 
-    public Date getDate() {
+    public Timestamp getDate() {
         return date;
     }
 
-    public void setDate(Date date) {
+    public void setDate(Timestamp date) {
         this.date = date;
     }
 }

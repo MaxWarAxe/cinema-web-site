@@ -1,6 +1,6 @@
 <template>
     <div v-if="loaded" class="film_container">
-        <img class="film_img" :src="'http://localhost:8080/films/image?path=' + film.imagePath" alt="">
+        <img class="film_img" :src="serverUrl() + '/films/image?path=' + film.imagePath" alt="">
         <div class="film_desc">
             <div class="age_restrict">{{ film.ageRating + '+' }}</div>
             <div class="film_name">{{ film.name }}</div>
@@ -8,7 +8,9 @@
             <div class="film_duration">{{ getHM(film.duration) }}</div>
         </div>
         <div class="film_shows">
-            <ShowButton v-for="i in 20" />
+            <ShowButton v-for="show in showList"
+                :time="new Date(show.date).toLocaleTimeString('ru', { hour: 'numeric', minute: 'numeric' })"
+                :money="show.basePrice" />
         </div>
 
     </div>
@@ -17,12 +19,13 @@
 <script setup>
 import ShowButton from './ShowButton.vue';
 import axios from 'axios';
-
+import serverUrl from "@/config"
 import getHM from "@/functions/minsToHM";
 import { ref, watch } from 'vue';
 
 const props = defineProps({
-    filmId: Number
+    filmId: Number,
+    showList: Array
 })
 
 watch(() => props.filmId, (newFilmId, oldFilmId) => {
@@ -36,7 +39,7 @@ getFilm()
 function getFilm() {
     axios({
         method: 'get',
-        url: 'http://localhost:8080/films/' + props.filmId,
+        url: serverUrl() + '/films/' + props.filmId,
         headers: {
             "Content-Type": "application/json",
         }

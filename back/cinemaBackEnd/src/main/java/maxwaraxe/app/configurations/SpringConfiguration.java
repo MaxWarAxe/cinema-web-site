@@ -3,6 +3,8 @@ package maxwaraxe.app.configurations;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.boot.web.server.ConfigurableWebServerFactory;
+import org.springframework.boot.web.server.WebServerFactoryCustomizer;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.PropertySource;
@@ -15,24 +17,25 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 import javax.sql.DataSource;
 import java.text.SimpleDateFormat;
-import java.util.Locale;
 
 @Configuration
 @PropertySource("classpath:config.properties")
-public class SpringConfiguration implements WebMvcConfigurer {
+public class SpringConfiguration implements WebMvcConfigurer, WebServerFactoryCustomizer<ConfigurableWebServerFactory> {
 
     @Value("${postgres.dbname}") String dbname;
     @Value("${postgres.user}")String user;
     @Value("${postgres.password}")String password;
     @Value("${postgres.host}")String host;
-    @Value("${postgres.port}") String port;
+    @Value("${postgres.port}") String postgresPort;
+    @Value("${port}") int port;
+
 
     @Bean
     public DataSource dataSource(){
         DriverManagerDataSource dataSource = new DriverManagerDataSource();
 
         dataSource.setDriverClassName("org.postgresql.Driver");
-        dataSource.setUrl("jdbc:postgresql://" + host + ":" + port + "/" + dbname);
+        dataSource.setUrl("jdbc:postgresql://" + host + ":" + postgresPort + "/" + dbname);
         dataSource.setUsername(user);
         dataSource.setPassword(password);
         return dataSource;
@@ -58,5 +61,11 @@ public class SpringConfiguration implements WebMvcConfigurer {
     @Override
     public void addCorsMappings(CorsRegistry registry) {
         registry.addMapping("/**");
+    }
+
+
+    @Override
+    public void customize(ConfigurableWebServerFactory factory) {
+        factory.setPort(port);
     }
 }

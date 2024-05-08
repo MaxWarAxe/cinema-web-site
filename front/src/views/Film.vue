@@ -1,8 +1,7 @@
 <template>
     <div v-if="loaded && found" class="panel">
         <div class="flex w-full mb-7">
-            <img class="h-96 flex mr-4 rounded-xl" :src="'http://localhost:8080/films/image?path=' + film.imagePath"
-                alt="">
+            <img class="h-96 flex mr-4 rounded-xl" :src="serverUrl() + '/films/image?path=' + film.imagePath" alt="">
             <div>
                 <div class="text-white font-bold text-3xl mb-5">{{ film.name }}</div>
                 <div class="flex text-white mb-2">
@@ -47,6 +46,7 @@ import router from '@/router/router';
 import getHM from "@/functions/minsToHM";
 import axios from 'axios';
 import { ref } from 'vue'
+import serverUrl from "@/config"
 
 console.log(router.currentRoute.value.params.id)
 
@@ -55,7 +55,7 @@ let loaded = ref(false)
 let found = ref(false)
 axios({
     method: 'get',
-    url: 'http://localhost:8080/films/' + router.currentRoute.value.params.id,
+    url: serverUrl() + '/films/' + router.currentRoute.value.params.id,
     headers: {
         "Content-Type": "application/json",
     }
