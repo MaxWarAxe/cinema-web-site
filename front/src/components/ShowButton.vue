@@ -4,13 +4,13 @@
             <div class="time">{{ time }}</div>
             <div class="money">{{ 'от ' + money + 'Р' }}</div>
         </div>
-        <div class="hall_type">2D</div>
+        <div class="hall_type">{{ hall_type }}</div>
     </div>
 </template>
 
 <script setup>
 let props = defineProps({
-    time: Date,
+    time: String,
     money: Number,
     hall_type: String
 })

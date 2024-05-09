@@ -5,20 +5,31 @@ import java.sql.Timestamp;
 public class Show {
     private int id;
     private int hallNumber;
+    private String hallType;
     private int filmId;
     private float basePrice;
     private int duration;
     private Timestamp date;
 
-    public Show(int id, int hallNumber, int filmId, int basePrice, int duration, Timestamp date) {
+    public Show(int id, int hallNumber, String hallType, int filmId, int basePrice, int duration, Timestamp date) {
         this.id = id;
         this.hallNumber = hallNumber;
+        this.hallType = hallType;
         this.filmId = filmId;
         this.basePrice = basePrice;
         this.duration = duration;
         this.date = date;
     }
     public Show(){}
+
+
+    public String getHallType() {
+        return hallType;
+    }
+
+    public void setHallType(String hallType) {
+        this.hallType = hallType;
+    }
 
     public int getId() {
         return id;

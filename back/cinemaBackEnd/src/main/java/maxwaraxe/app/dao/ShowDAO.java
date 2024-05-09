@@ -22,10 +22,18 @@ public class ShowDAO {
 
     public List<Show> getShowsByDate(Date date){
         return jdbcTemplate.query(
-                "SELECT *\n" +
-                "FROM show s\n" +
+                "SELECT s.show_id,s.hall_number,s.film_id,s.show_base_price,s.show_duration,s.show_datetime,h.hall_type\n" +
+                "FROM show s LEFT JOIN hall h ON s.hall_number = h.hall_number\n" +
                 "WHERE s.show_datetime >= ? AND s.show_datetime < (?::date + '1 day'::interval)", new Object[]{date,date},new ShowMapper());
     }
+
+    public Show getShowsById(int id){
+        return jdbcTemplate.query(
+                "SELECT s.show_id,s.hall_number,s.film_id,s.show_base_price,s.show_duration,s.show_datetime,h.hall_type\n" +
+                        "FROM show s LEFT JOIN hall h ON s.hall_number = h.hall_number\n"+
+                       "WHERE s.show_id = ?", new Object[]{id},new ShowMapper()).stream().findAny().orElse(null);
+    }
+
     public List<Show> getAllShows(){
         return jdbcTemplate.query(
                 "SELECT * FROM show"

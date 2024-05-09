@@ -18,6 +18,7 @@ public class ShowMapper implements RowMapper<Show> {
         show.setBasePrice(Float.parseFloat(rs.getString("show_base_price")));
         show.setDuration(rs.getInt("show_duration"));
         show.setDate(rs.getTimestamp("show_datetime"));
+        show.setHallType(rs.getString("hall_type"));
         return show;
     }
 }

@@ -24,10 +24,17 @@ public class ShowController {
     private ObjectMapper objectMapper;
 
     @GetMapping(value = "{date}")
-    public String getShowById(@PathVariable("date")@DateTimeFormat(pattern="yyyy-MM-dd") Date date) throws JsonProcessingException {
+    public String getShowByDate(@PathVariable("date")@DateTimeFormat(pattern="yyyy-MM-dd") Date date) throws JsonProcessingException {
         List<Show> showList = showDAO.getShowsByDate(date);
         return objectMapper.writeValueAsString(showList);
     }
+
+    @GetMapping(value="/id/{id}")
+    public String getShowById(@PathVariable("id")int id) throws JsonProcessingException{
+        Show show = showDAO.getShowsById(id);
+        return objectMapper.writeValueAsString(show);
+    }
+
     @GetMapping()
     public String getShows() throws JsonProcessingException {
         return objectMapper.writeValueAsString(showDAO.getAllShows());

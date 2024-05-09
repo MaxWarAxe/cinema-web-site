@@ -21,7 +21,6 @@ public class FilmController {
     private FilmDAO filmDAO;
     private ObjectMapper objectMapper;
 
-
     @Autowired
     public void setFilmDAO(FilmDAO filmDAO){
         this.filmDAO = filmDAO;

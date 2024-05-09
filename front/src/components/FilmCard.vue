@@ -8,9 +8,10 @@
             <div class="film_duration">{{ getHM(film.duration) }}</div>
         </div>
         <div class="film_shows">
-            <ShowButton v-for="show in showList"
-                :time="new Date(show.date).toLocaleTimeString('ru', { hour: 'numeric', minute: 'numeric' })"
-                :money="show.basePrice" />
+            <RouterLink v-for="show in showList" :to="'/orders/' + show.id">
+                <ShowButton :time="new Date(show.date).toLocaleTimeString('ru', { hour: 'numeric', minute: 'numeric' })"
+                    :money="show.basePrice" :hall_type="show.hallType" />
+            </RouterLink>
         </div>
 
     </div>
@@ -24,7 +25,7 @@ import getHM from "@/functions/minsToHM";
 import { ref, watch } from 'vue';
 
 const props = defineProps({
-    filmId: Number,
+    filmId: String,
     showList: Array
 })
 

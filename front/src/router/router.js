@@ -9,16 +9,17 @@ import FilmReport from '@/views/reports/FilmReport.vue';
 import ShowReport from '@/views/reports/ShowReport.vue';
 import HallCapacityReport from '@/views/reports/HallCapacityReport.vue';
 import Film from '@/views/Film.vue';
+import Order from '@/views/Order.vue';
 
 const routes = [
     { path: '/shows/:date', component: ShowList },
-    { path: '/', component: ShowList },
+    { path: '/', component: FilmList },
     { path: '/films', component: FilmList },
     { path: '/films/:id', component: Film },
     { path: '/admin', component: AdminPanel },
     { path: '/login', component: Login },
     { path: '/report', component: ReportPanel },
-
+    { path: '/orders/:id', component: Order},
     { path: '/report/film', component: FilmReport },
     { path: '/report/show', component: ShowReport },
     { path: '/report/capacity', component: HallCapacityReport }
