@@ -22,4 +22,7 @@ public class TicketDAO {
                 "WHERE t.show_id = ?\n",new Object[]{showId},new TicketMapper());
 
     }
+    public int addTicketByShowIdAndSeatId(int seatId,int showId){
+        return jdbcTemplate.update("call public.add_new_ticket (?, ?)", seatId, showId);
+    }
 }

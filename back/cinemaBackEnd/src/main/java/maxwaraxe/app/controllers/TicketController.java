@@ -5,10 +5,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import maxwaraxe.app.dao.TicketDAO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @Component
 @RestController
@@ -23,5 +20,9 @@ public class TicketController {
     @GetMapping(value = "{id}")
     public String getTicketsByShowId(@PathVariable(value = "id") int id) throws JsonProcessingException {
         return objectMapper.writeValueAsString(ticketDAO.getTicketsByShowId(id));
+    }
+    @PostMapping(value = "/add")
+    public String addNewTicketBySeatIdAndShowId(@RequestParam("showId") int showId, @RequestParam("seatId") int seatId){
+        return String.valueOf(ticketDAO.addTicketByShowIdAndSeatId(seatId,showId));
     }
 }

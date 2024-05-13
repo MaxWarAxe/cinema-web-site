@@ -29,7 +29,7 @@
                     </linearGradient>
                 </defs>
             </svg>
-            <div class="grid m-auto">
+            <div class="grid m-auto mb-20">
                 <div v-for="(row, rowIndex) in rows" class="m-auto">
                     <div class="inline-block w-10 h-10 text-3xl text-white mr-20">{{ rowIndex + 1 }}</div>
                     <Seat @clicked="onSeatClicked" v-for="(seat, seatIndex) in numbers" class="inline"
@@ -38,6 +38,13 @@
                     <div class="inline-block w-10 h-10 text-3xl text-white ml-20">{{ rowIndex + 1 }}</div>
                 </div>
             </div>
+        </div>
+        <div v-if="pickedSeatList.length != 0" class="w-full h-auto bg-gray-900 p-5">
+            <div class="text-white font-bold text-3xl mb-5">Ваши места</div>
+            <div v-for="seat in pickedSeatList">
+                <div class="text-white font-bold text-3xl mb-5"> {{ seat.row + 'ряд, ' + seat.number + 'место' }}</div>
+            </div>
+            <ButtonCustom @click="buyTickets" text="Купить билеты"></ButtonCustom>
         </div>
     </div>
 </template>
@@ -48,6 +55,7 @@ import axios from 'axios';
 import serverUrl from '@/config';
 import router from '@/router/router';
 import Seat from '@/components/Seat.vue';
+import ButtonCustom from '@/components/ButtonCustom.vue';
 
 let show = ref()
 let film = ref()
@@ -60,6 +68,25 @@ let seatsListFor = ref([])
 
 let rows = ref()
 let numbers = ref()
+
+function buyTickets() {
+    for (let i = 0; i < pickedSeatList.value.length; i++) {
+        axios({
+            method: 'post',
+            url: serverUrl() + '/tickets/add?' + 'seatId=' + pickedSeatList.value[i].id + '&' + 'showId=' + + show.value.id,
+            headers: {
+                "Content-Type": "application/json",
+            }
+        })
+            .then(function (response) {
+                console.log(response.data)
+                getTickets(show.value.id)
+            })
+            .catch(function (error) {
+                console.log(error);
+            });
+    }
+}
 
 function getTickets(showId) {
     axios({
@@ -93,10 +120,12 @@ function getMaxSeatNumber(list) {
     return Math.max.apply(Math, list.map(function (list) { return list.seatNumber; }))
 }
 
-function onSeatClicked(seatNumber, seatRow) {
-    if (pickedSeatList.value.length == 0 || pickedSeatList.value.find((element) => { element.number == seatNumber })) {
-        pickedSeatList.value.push({ number: seatNumber, row: seatRow })
+function onSeatClicked(seatNumber, seatRow, seatId) {
+    if (pickedSeatList.value.find((obj) => obj.id == seatId) != undefined) {
+        pickedSeatList.value = pickedSeatList.value.filter((seat) => seat.id !== seatId)
+        return
     }
+    pickedSeatList.value.push({ number: seatNumber, row: seatRow, id: seatId })
 }
 
 function getSeats(hallNumber, showId) {

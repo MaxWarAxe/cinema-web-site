@@ -57,12 +57,11 @@ function init() {
 function clicked() {
     if (disabled.value)
         return
-    emit('clicked', props.number, props.row)
+    emit('clicked', props.number, props.row, props.seat.id)
     changeColor()
 }
 
 function changeColor() {
-
     if (picked.value == false) {
         seatColor.value = colorPicked
         picked.value = true;
@@ -71,7 +70,6 @@ function changeColor() {
         seatColor.value = colorNormal
         picked.value = false;
     }
-
 }
 </script>
 
