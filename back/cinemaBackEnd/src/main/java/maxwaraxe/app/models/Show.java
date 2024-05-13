@@ -1,5 +1,7 @@
 package maxwaraxe.app.models;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+
 import java.sql.Timestamp;
 
 public class Show {
@@ -9,6 +11,7 @@ public class Show {
     private int filmId;
     private float basePrice;
     private int duration;
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm")
     private Timestamp date;
 
     public Show(int id, int hallNumber, String hallType, int filmId, int basePrice, int duration, Timestamp date) {
