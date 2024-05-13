@@ -86,6 +86,7 @@ function buyTickets() {
                 console.log(error);
             });
     }
+    pickedSeatList.value = []
 }
 
 function getTickets(showId) {

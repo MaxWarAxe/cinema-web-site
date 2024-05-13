@@ -19,7 +19,7 @@
 </template>
 
 <script setup>
-import { ref } from 'vue'
+import { ref, watch } from 'vue'
 
 const colorNormal = "#cc99ff"
 const colorPicked = "#bd247e"
@@ -34,6 +34,10 @@ const props = defineProps({
     row: Number,
     seat: Object,
 })
+
+watch(props.seat, (newValue, oldValue) => {
+    init()
+}, { deep: true })
 
 let picked = ref(false)
 let seatColor = ref(colorNormal)
