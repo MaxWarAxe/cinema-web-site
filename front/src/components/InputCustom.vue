@@ -1,6 +1,6 @@
 <template>
     <div>
-        <input  :placeholder="defaultText" class="bg-slate-900 p-2 text-cyan-50 border-solid border-white border-2 rounded-xl" :type="type">
+        <input  :placeholder="defaultText" class="bg-slate-900 p-2 text-cyan-50 border-solid border-white border-2 rounded-lg" :type="type">
     </div>
 </template>
 

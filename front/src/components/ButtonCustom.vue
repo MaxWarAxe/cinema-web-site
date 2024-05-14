@@ -5,7 +5,7 @@
 </script>
 
 <template>
-    <button class="p-2 bg-slate-900 text-cyan-50 border-solid border-white border-2 rounded-xl">{{ text }}</button>
+    <button class="p-2 bg-slate-900 text-cyan-50 border-solid border-white border-2 rounded-lg">{{ text }}</button>
 </template>
 
 
