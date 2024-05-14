@@ -8,7 +8,7 @@
             <div class="film_duration">{{ getHM(film.duration) }}</div>
         </div>
         <div class="film_shows">
-            <RouterLink v-for="show in showList" :to="'/orders/' + show.id">
+            <RouterLink class="w-24 h-20 mr-4 mb-4" v-for="show in showList" :to="'/orders/' + show.id">
                 <ShowButton :time="new Date(show.date).toLocaleTimeString('ru', { hour: 'numeric', minute: 'numeric' })"
                     :money="show.basePrice" :hall_type="show.hallType" :key="console.log(show)" />
             </RouterLink>
