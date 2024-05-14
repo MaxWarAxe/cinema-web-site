@@ -21,7 +21,6 @@ import java.text.SimpleDateFormat;
 @Configuration
 @PropertySource("classpath:config.properties")
 public class SpringConfiguration implements WebMvcConfigurer, WebServerFactoryCustomizer<ConfigurableWebServerFactory> {
-
     @Value("${postgres.dbname}") String dbname;
     @Value("${postgres.user}")String user;
     @Value("${postgres.password}")String password;

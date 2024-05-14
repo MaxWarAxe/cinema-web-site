@@ -10,7 +10,7 @@
         <div class="film_shows">
             <RouterLink v-for="show in showList" :to="'/orders/' + show.id">
                 <ShowButton :time="new Date(show.date).toLocaleTimeString('ru', { hour: 'numeric', minute: 'numeric' })"
-                    :money="show.basePrice" :hall_type="show.hallType" />
+                    :money="show.basePrice" :hall_type="show.hallType" :key="console.log(show)" />
             </RouterLink>
         </div>
 

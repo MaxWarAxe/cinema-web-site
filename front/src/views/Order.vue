@@ -39,12 +39,13 @@
                 </div>
             </div>
         </div>
-        <div v-if="pickedSeatList.length != 0" class="w-full h-auto bg-gray-900 p-5">
+        <div v-if="pickedSeatList.length != 0" class="w-full h-auto bg-gray-900 p-5 mb-20">
             <div class="text-white font-bold text-3xl mb-5">Ваши места</div>
             <div v-for="seat in pickedSeatList">
-                <div class="text-white font-bold text-3xl mb-5"> {{ seat.row + 'ряд, ' + seat.number + 'место' }}</div>
+                <div class="text-white font-bold text-3xl mb-5 inline-block"> {{ seat.rowNumber + ' ряд, ' + seat.seatNumber + ' место'}}</div>
+                <div class="text-white font-bold text-3xl mb-5 inline-block float-end">{{ 'Стоимость: ' + Math.round(show.basePrice*seat.coefficient) + ' Р' }}</div>
             </div>
-            <ButtonCustom @click="buyTickets" text="Купить билеты"></ButtonCustom>
+            <ButtonCustom @click="buyTickets" :text="'Купить билеты за ' +  getSumTicketPrice() + ' Р'"></ButtonCustom>
         </div>
     </div>
 </template>
@@ -65,9 +66,16 @@ let seatsLoaded = ref(false)
 let pickedSeatList = ref([])
 let seatsList = ref([])
 let seatsListFor = ref([])
+let sumTicketPrice = ref()
 
 let rows = ref()
 let numbers = ref()
+
+function getSumTicketPrice(){
+    let sum = 0
+    pickedSeatList.value.forEach((obj)=> sum += show.value.basePrice*obj.coefficient)
+    return sum
+}
 
 function buyTickets() {
     for (let i = 0; i < pickedSeatList.value.length; i++) {
@@ -121,12 +129,12 @@ function getMaxSeatNumber(list) {
     return Math.max.apply(Math, list.map(function (list) { return list.seatNumber; }))
 }
 
-function onSeatClicked(seatNumber, seatRow, seatId) {
-    if (pickedSeatList.value.find((obj) => obj.id == seatId) != undefined) {
-        pickedSeatList.value = pickedSeatList.value.filter((seat) => seat.id !== seatId)
+function onSeatClicked(seat) {
+    if (pickedSeatList.value.find((obj) => obj.id == seat.id) != undefined) {
+        pickedSeatList.value = pickedSeatList.value.filter((pickedSeat) => pickedSeat.id !== seat.id)
         return
     }
-    pickedSeatList.value.push({ number: seatNumber, row: seatRow, id: seatId })
+    pickedSeatList.value.push(seat)
 }
 
 function getSeats(hallNumber, showId) {

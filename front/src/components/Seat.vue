@@ -61,7 +61,7 @@ function init() {
 function clicked() {
     if (disabled.value)
         return
-    emit('clicked', props.number, props.row, props.seat.id)
+    emit('clicked', props.seat)
     changeColor()
 }
 
