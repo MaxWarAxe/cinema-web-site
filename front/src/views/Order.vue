@@ -42,10 +42,12 @@
         <div v-if="pickedSeatList.length != 0" class="w-full h-auto bg-gray-900 p-5 mb-20">
             <div class="text-white font-bold text-3xl mb-5">Ваши места</div>
             <div v-for="seat in pickedSeatList">
-                <div class="text-white font-bold text-3xl mb-5 inline-block"> {{ seat.rowNumber + ' ряд, ' + seat.seatNumber + ' место'}}</div>
-                <div class="text-white font-bold text-3xl mb-5 inline-block float-end">{{ 'Стоимость: ' + Math.round(show.basePrice*seat.coefficient) + ' Р' }}</div>
+                <div class="text-white font-bold text-3xl mb-5 inline-block"> {{ seat.rowNumber + ' ряд, ' +
+                    seat.seatNumber + ' место'}}</div>
+                <div class="text-white font-bold text-3xl mb-5 inline-block float-end">{{ 'Стоимость: ' +
+                    Math.round(show.basePrice * seat.coefficient) + ' Р' }}</div>
             </div>
-            <ButtonCustom @click="buyTickets" :text="'Купить билеты за ' +  getSumTicketPrice() + ' Р'"></ButtonCustom>
+            <ButtonCustom @click="buyTickets" :text="'Купить билеты за ' + getSumTicketPrice() + ' Р'"></ButtonCustom>
         </div>
     </div>
 </template>
@@ -68,12 +70,12 @@ let seatsList = ref([])
 let seatsListFor = ref([])
 let sumTicketPrice = ref()
 
-let rows = ref()
-let numbers = ref()
+let rows = ref('')
+let numbers = ref('')
 
-function getSumTicketPrice(){
+function getSumTicketPrice() {
     let sum = 0
-    pickedSeatList.value.forEach((obj)=> sum += show.value.basePrice*obj.coefficient)
+    pickedSeatList.value.forEach((obj) => sum += show.value.basePrice * obj.coefficient)
     return sum
 }
 

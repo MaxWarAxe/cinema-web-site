@@ -6,6 +6,9 @@ import {createVuetify} from 'vuetify'
 import * as components from 'vuetify/components'
 import * as directives from 'vuetify/directives'
 
+// HTML to pdf
+
+
 
 import { createApp } from 'vue';
 import router from './router/router.js';
