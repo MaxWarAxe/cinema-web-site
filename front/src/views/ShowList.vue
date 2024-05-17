@@ -17,7 +17,8 @@ for (let i = 0; i < 7; i++) {
     dateList.value.push(newDate)
 }
 let filmList = ref()
-
+let loaded = ref(false)
+let zeroShows = ref(false)
 watch(() => route.params.date, (newDate, oldDate) => {
     getShows()
 })
@@ -34,11 +35,20 @@ function getShows() {
             let obj = response.data;
             obj = Object.groupBy(obj, ({ filmId }) => filmId)
             filmList.value = Object.entries(obj)
-            console.log(Object.entries(obj))
+            loaded.value = true
+            if (filmList.value.length == 0) {
+                zeroShows.value = true;
+            } else {
+                zeroShows.value = false;
+            }
         })
         .catch(function (error) {
             console.log(error);
         });
+}
+
+function loadContent() {
+
 }
 getShows()
 
@@ -54,11 +64,12 @@ getShows()
 
         </div>
         <FilmSepLine class="mb-10" />
-        <div v-for="film in filmList">
+        <div v-if="loaded && !zeroShows" v-for="film in filmList">
             <FilmCard :film-id="film[0]" :show-list="film[1]" />
-            <FilmSepLine class="mb-10" />
+            <FilmSepLine v-if="loaded" class="mb-10" />
         </div>
-
+        <div v-if="loaded && zeroShows" class="text-center text-3xl">Нет показов на этот день ({{ route.params.date }})
+        </div>
     </div>
 </template>
 

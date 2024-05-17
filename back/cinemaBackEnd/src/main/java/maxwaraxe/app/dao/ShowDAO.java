@@ -3,11 +3,12 @@ package maxwaraxe.app.dao;
 
 import maxwaraxe.app.mappers.ShowMapper;
 import maxwaraxe.app.models.Show;
+import maxwaraxe.app.models.ShowShort;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Component;
 
-import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 
@@ -34,9 +35,9 @@ public class ShowDAO {
                        "WHERE s.show_id = ?", new Object[]{id},new ShowMapper()).stream().findAny().orElse(null);
     }
 
-    public List<Show> getAllShows(){
+    public List<ShowShort> getAllShows(){
         return jdbcTemplate.query(
                 "SELECT * FROM show"
-                ,new ShowMapper());
+                ,new BeanPropertyRowMapper<>(ShowShort.class));
     }
 }

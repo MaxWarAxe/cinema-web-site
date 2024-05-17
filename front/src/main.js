@@ -5,6 +5,8 @@ import 'vuetify/styles'
 import {createVuetify} from 'vuetify'
 import * as components from 'vuetify/components'
 import * as directives from 'vuetify/directives'
+import '@mdi/font/css/materialdesignicons.css'
+
 
 // HTML to pdf
 
@@ -23,4 +25,4 @@ const vuetify = createVuetify({
     directives,
 })
 
-createApp(App).use(router).use(vuetify).mount('#app');
+createApp(App).use(router).use(vuetify,{iconfont:'mdi'}).mount('#app');

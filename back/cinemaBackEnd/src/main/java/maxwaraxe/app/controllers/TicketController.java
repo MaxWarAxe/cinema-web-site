@@ -17,6 +17,11 @@ public class TicketController {
     @Autowired
     private ObjectMapper objectMapper;
 
+    @GetMapping()
+    public String getAllTickets() throws JsonProcessingException {
+        return objectMapper.writeValueAsString(ticketDAO.getAllTickets());
+    }
+
     @GetMapping(value = "{id}")
     public String getTicketsByShowId(@PathVariable(value = "id") int id) throws JsonProcessingException {
         return objectMapper.writeValueAsString(ticketDAO.getTicketsByShowId(id));
