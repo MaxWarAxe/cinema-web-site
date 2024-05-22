@@ -1,4 +1,4 @@
-const host = "172.27.204.211"
+const host = "localhost"
 const port = "9090"
 
 function serverUrl() {

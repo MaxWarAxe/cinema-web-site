@@ -11,6 +11,7 @@ import HallCapacityReport from '@/views/reports/HallCapacityReport.vue';
 import Film from '@/views/Film.vue';
 import Order from '@/views/Order.vue';
 import AdminView from '@/views/AdminView.vue'
+import AdminFilmView from '@/views/AdminFilmView.vue'
 
 const routes = [
     { path: '/shows/:date', component: ShowList },
@@ -19,6 +20,7 @@ const routes = [
     { path: '/films/:id', component: Film },
     { path: '/admin', component: AdminPanel },
     { path: '/admin/:name',component: AdminView},
+    { path: '/admin/films',component: AdminFilmView},
     { path: '/login', component: Login },
     { path: '/report', component: ReportPanel },
     { path: '/orders/:id', component: Order},

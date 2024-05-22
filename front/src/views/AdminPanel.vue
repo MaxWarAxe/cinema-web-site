@@ -14,7 +14,7 @@ for (let i = 0; i < 20; i++) {
             <ButtonCustom class="buttonA" text="Редактировать показы" />
         </RouterLink>
         <FilmSepLine class="mb-5" />
-        <RouterLink to="/admin/film">
+        <RouterLink to="/admin/films">
             <ButtonCustom class="buttonA" text="Редактировать фильмы" />
         </RouterLink>
         <RouterLink to="/admin/director">
