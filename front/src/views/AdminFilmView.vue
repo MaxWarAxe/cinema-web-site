@@ -80,13 +80,20 @@
                 mdi-delete
             </v-icon>
         </template>
-        <template v-slot:item.film_actors="{ item }">
-            <v-select chips readonly variant="underlined" :items="item.film_actors" v-model="item.film_actors"></v-select>
+        
+        <template v-slot:item.actors="{ item }">
+            <span>{{ item.actors.map((item)=>item.nameAndSurname).join(", ") }}</span>
         </template>
-        <template v-slot:item.film_directors="{ item }">
-            <span>{{ item.film_directors }}</span>
+        <template v-slot:item.directors="{ item }">
+            <span>{{ item.directors.map((item)=>item.nameAndSurname).join(", ") }}</span>
         </template>
-
+        <template v-slot:item.genres="{ item }">
+            <span>{{ item.genres.join(", ") }}</span>
+        </template>
+        <template v-slot:item.imagePath="{ item }">
+            <img :src="serverUrl() + '/films/image?path=' + item.imagePath" width="100px" alt="">
+        </template>
+        
         <template v-slot:no-data>
             <v-btn color="primary" @click="initialize">
                 Reset
@@ -107,45 +114,47 @@ let dialog = ref(false)
 let editedIndex = ref()
 let dialogDelete = ref(false)
 let modelArray = ref([])
+let items = ref([])
+getData()
 
 let allGenres = ref(["a","b","c","d","e"])
 let allActors = ref(["a","b","c","d","e"])
 let allDirectors = ref(["a","b","c","d","e"])
 let editedItem = ref({
-    name: '',
-    film_premiere_date: 2003,
+    name: 'nadssqw',
     genres: ["a", "b", "c"],
-    film_duration: 0,
-    film_description: 0,
-    film_age_rating: 0,
-    film_actors: ["a", "b", "c"],
-    film_directors: ["a", "b", "c"],
-    film_image: "image",
+    worldPremiereDate: 0,
+    duration: 0,
+    description: 0,
+    ageRating: 0,
+    actors: ["a", "b", "c"],
+    directors: ["a", "b", "c"],
+    imagePath: "image",
 })
 let defaultItem = ref({
     name: 'nadssqw',
-    film_genres: ["a", "b", "c"],
-    film_premiere_date: 0,
-    film_duration: 0,
-    film_description: 0,
-    film_age_rating: 0,
-    film_actors: ["a", "b", "c"],
-    film_directors: ["a", "b", "c"],
-    film_image: "image",
+    genres: ["a", "b", "c"],
+    worldPremiereDate: 0,
+    duration: 0,
+    description: 0,
+    ageRating: 0,
+    actors: ["a", "b", "c"],
+    directors: ["a", "b", "c"],
+    imagePath: "image",
 })
 
 
 
 let headers = ref([
     { title: 'Назване', key: 'name' },
-    { title: "Мировая премьера", key: "film_premiere_date" },
-    { title: "Жанры", key: "film_genres" },
-    { title: "Длительность", key: "film_duration" },
-    { title: "Описание", key: "film_description" },
-    { title: "Возрастной рейтинг", key: "film_age_rating" },
-    { title: "Актёры", key: "film_actors" },
-    { title: "Режиссеры", key: "film_directors" },
-    { title: "Превью", key: "film_image" },
+    { title: "Мировая премьера", key: "worldPremiereDate" },
+    { title: "Жанры", key: "genres" },
+    { title: "Длительность", key: "duration" },
+    { title: "Описание", key: "description" },
+    { title: "Возрастной рейтинг", key: "ageRating" },
+    { title: "Актёры", key: "actors" },
+    { title: "Режиссеры", key: "directors" },
+    { title: "Превью", key: "imagePath" },
     { title: 'Действия', key: 'actions', sortable: false },
 ])
 
@@ -226,37 +235,49 @@ function initHeaders() {
 }
 
 function initAfterGet() {
-
-    defaultItem.value = items.value[0]
-    loaded.value = true;
-    headers.value = initHeaders()
+    loaded.value = true
 }
 
+function getFilms(){
+    axios({
+        method: 'get',
+        url: serverUrl() + "/films",
+        headers: {
+            "Content-Type": "application/json",
+        }
+    })
+    .then(function (response) {
+        console.log(response.data);
+        items.value = response.data;
+        
+    })
+    .catch(function (error) {
+        console.log(error);
+    });
+}
 
+function getGenres(){
+
+}
+
+function getActors(){
+
+}
+
+function getDirectors(){
+
+}
 
 function getData() {
-        axios({
-            method: 'get',
-            url: serverUrl() + "/" + route.params.name,
-            headers: {
-                "Content-Type": "application/json",
-            }
-        })
-        .then(function (response) {
-            console.log(response.data);
-            items.value = response.data;
-            initAfterGet()
-        })
-        .catch(function (error) {
-            console.log(error);
-        });
+    getFilms()
+    initAfterGet();
 }
-//getData()
-let items = ref([])
 
-items.value.push(defaultItem.value)
-items.value.push({})
-loaded.value = true
+
+//items.value.push(defaultItem.value)
+//items.value.push({})
+
+
 </script>
 
 <style scoped></style>

@@ -10,11 +10,11 @@
                 </div>
                 <div class="flex text-white mb-2">
                     <div class="mr-1 w-60">Режиссер:</div>
-                    <div>{{ film.directors.join(", ") }}</div>
+                    <div>{{ film.directors.map((item)=>item.nameAndSurname).join(", ") }}</div>
                 </div>
                 <div class="flex text-white mb-2">
                     <div class="mr-1 w-60">В ролях:</div>
-                    <div>{{ film.actors.join(", ") }}</div>
+                    <div>{{ film.actors.map((item)=>item.nameAndSurname).join(", ") }}</div>
                 </div>
                 <div class="flex text-white mb-2">
                     <div class="mr-1 w-60">Страна:</div>

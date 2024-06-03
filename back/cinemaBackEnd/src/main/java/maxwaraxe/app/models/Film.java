@@ -22,8 +22,8 @@ public class Film {
     private String imagePath;
     private String description;
     private List<String> genres = new ArrayList<String>();
-    private List<String> directors = new ArrayList<String>();
-    private List<String> actors = new ArrayList<String>();
+    private List<Director> directors = new ArrayList<Director>();
+    private List<Actor> actors = new ArrayList<Actor>();
     private List<String> countries = new ArrayList<String>();
 
 }
