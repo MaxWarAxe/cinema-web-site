@@ -18,10 +18,8 @@
 
                         <v-card-text>
                             <v-container>
-                                <v-row>
-                                    <v-col v-for="(key, i) in Object.keys(defaultItem)" cols="12" md="4" sm="6">
-                                        <v-text-field v-model="modelArray[i]" :label="key"></v-text-field>
-                                    </v-col>
+                                <v-row v-for="(key, i) in Object.keys(defaultItem)" cols="12" md="4" sm="6">
+                                    <v-text-field v-model="modelArray[i]" :label="key"></v-text-field>
                                 </v-row>
                             </v-container>
                         </v-card-text>

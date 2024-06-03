@@ -19,10 +19,32 @@
                         <v-card-text>
                             <v-container>
                                 <v-row>
-                                    <v-col cols="12" md="4" sm="6">
-                                        <v-text-field v-model="modelArray[i]" :label="key"></v-text-field>
-                                    </v-col>
+                                    <v-text-field v-model="editedItem.name" label="Название"></v-text-field>
                                 </v-row>
+                                <v-row>
+                                    <v-date-input v-model="editedItem.film_premiere_date"
+                                        label="Мировая премьера"></v-date-input>
+                                </v-row>
+                                <v-row>
+                                    <v-select multiple v-model="editedItem.film_genres" :items="allGenres" label="Жанры"></v-select>
+                                </v-row>
+                                <v-row>
+                                    <v-text-field v-model="editedItem.film_duration"
+                                        label="Длительность"></v-text-field>
+                                </v-row>
+                                <v-row>
+                                    <v-text-field v-model="editedItem.film_description" label="Описание"></v-text-field>
+                                </v-row>
+                                <v-row>
+                                    <v-select multiple v-model="editedItem.film_actors" :items="allActors" label="Актеры"></v-select>
+                                </v-row>
+                                <v-row>
+                                    <v-select multiple v-model="editedItem.film_directors" :items="allDirectors" label="Режиссеры"></v-select>
+                                </v-row>
+                                <v-row>
+                                    <v-file-input v-model="editedItem.film_image" label="Картинка"></v-file-input>
+                                </v-row>
+
                             </v-container>
                         </v-card-text>
 
@@ -58,13 +80,13 @@
                 mdi-delete
             </v-icon>
         </template>
-        <template v-slot:item.film_actors="{item}">
-            <v-select :items="item.film_actors"></v-select>
+        <template v-slot:item.film_actors="{ item }">
+            <v-select chips readonly variant="underlined" :items="item.film_actors" v-model="item.film_actors"></v-select>
         </template>
-        <template v-slot:item.film_directors="{item}">
-            <v-select :items="item.film_directors"></v-select>
+        <template v-slot:item.film_directors="{ item }">
+            <span>{{ item.film_directors }}</span>
         </template>
-        
+
         <template v-slot:no-data>
             <v-btn color="primary" @click="initialize">
                 Reset
@@ -78,6 +100,7 @@ import { ref } from 'vue'
 import { useRoute } from 'vue-router';
 import axios from 'axios';
 import serverUrl from '@/config';
+
 let route = useRoute()
 let loaded = ref(false)
 let dialog = ref(false)
@@ -85,38 +108,44 @@ let editedIndex = ref()
 let dialogDelete = ref(false)
 let modelArray = ref([])
 
+let allGenres = ref(["a","b","c","d","e"])
+let allActors = ref(["a","b","c","d","e"])
+let allDirectors = ref(["a","b","c","d","e"])
 let editedItem = ref({
-    name : '',
-    film_premiere_date: 0,
+    name: '',
+    film_premiere_date: 2003,
+    genres: ["a", "b", "c"],
     film_duration: 0,
     film_description: 0,
     film_age_rating: 0,
-    film_actors: ["a","b","c"],
-    film_directors: ["a","b","c"],
+    film_actors: ["a", "b", "c"],
+    film_directors: ["a", "b", "c"],
     film_image: "image",
 })
 let defaultItem = ref({
-    name : 'nadssqw',
+    name: 'nadssqw',
+    film_genres: ["a", "b", "c"],
     film_premiere_date: 0,
     film_duration: 0,
     film_description: 0,
     film_age_rating: 0,
-    film_actors: ["a","b","c"],
-    film_directors: ["a","b","c"],
+    film_actors: ["a", "b", "c"],
+    film_directors: ["a", "b", "c"],
     film_image: "image",
 })
 
 
 
 let headers = ref([
-    {title: 'Назване',key: 'name'},
-    {title: "Мировая премьера", key: "film_premiere_date"},
-    {title: "Длительность", key: "film_duration"},
-    {title: "Описание", key: "film_description"},
-    {title: "Возрастной рейтинг",key: "film_age_rating"},
-    {title: "Актёры", key: "film_actors"},
-    {title: "Режиссеры", key: "film_directors"},
-    {title: "Превью", key:"film_image"},
+    { title: 'Назване', key: 'name' },
+    { title: "Мировая премьера", key: "film_premiere_date" },
+    { title: "Жанры", key: "film_genres" },
+    { title: "Длительность", key: "film_duration" },
+    { title: "Описание", key: "film_description" },
+    { title: "Возрастной рейтинг", key: "film_age_rating" },
+    { title: "Актёры", key: "film_actors" },
+    { title: "Режиссеры", key: "film_directors" },
+    { title: "Превью", key: "film_image" },
     { title: 'Действия', key: 'actions', sortable: false },
 ])
 
@@ -206,13 +235,13 @@ function initAfterGet() {
 
 
 function getData() {
-    axios({
-        method: 'get',
-        url: serverUrl() + "/" + route.params.name,
-        headers: {
-            "Content-Type": "application/json",
-        }
-    })
+        axios({
+            method: 'get',
+            url: serverUrl() + "/" + route.params.name,
+            headers: {
+                "Content-Type": "application/json",
+            }
+        })
         .then(function (response) {
             console.log(response.data);
             items.value = response.data;
