@@ -2,13 +2,12 @@ package maxwaraxe.app.controllers;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import jakarta.websocket.server.PathParam;
 import maxwaraxe.app.dao.FilmDAO;
 import maxwaraxe.app.models.Film;
-import org.apache.tomcat.util.http.fileupload.FileUpload;
-import org.apache.tomcat.util.http.fileupload.FileUploadBase;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.core.io.Resource;
 import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -47,15 +46,27 @@ public class FilmController {
         return "1";
     }
 
+    @PostMapping("/update")
+    public String updateFilm(@RequestBody Film nfilm){
+        filmDAO.updateFilm(nfilm);
+        return "1";
+    }
+
+    @PostMapping("delete")
+    public String deleteFilm(@RequestParam("id") int id){
+        filmDAO.deleteFilm(id);
+        return "1";
+    }
+
     @GetMapping("{id}")
     public String getFilmById(@PathVariable("id") Long id) throws JsonProcessingException {
         Film film = filmDAO.getFilmById(id);
         return objectMapper.writeValueAsString(film);
     }
 
-    @GetMapping(value = "/image",produces = MediaType.APPLICATION_OCTET_STREAM_VALUE)
-    public Resource getImageByPath(@RequestParam(name = "path") String path){
-        return this.filmDAO.getImageByPath(path);
+    @GetMapping(value = "/image",produces = MediaType.IMAGE_JPEG_VALUE)
+    public ResponseEntity<byte[]> getImageByPath(@RequestParam(name = "path") String path) throws IOException {
+        return ResponseEntity.ok(filmDAO.getImageAbsolute(path).readAllBytes());
     }
 
     @PostMapping(value= "/image/new")

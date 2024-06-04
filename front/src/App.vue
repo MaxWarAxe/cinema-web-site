@@ -1,6 +1,8 @@
 <script setup>
 import Header from './components/Header.vue';
 import ShowList from './views/ShowList.vue';
+import {ref} from 'vue'
+localStorage.setItem("ROLE",100)
 </script>
 
 <template>

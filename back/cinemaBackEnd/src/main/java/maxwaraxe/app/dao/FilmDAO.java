@@ -15,7 +15,13 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
 
+import javax.imageio.ImageIO;
+import java.awt.*;
+import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.FileInputStream;
 import java.io.IOException;
+import java.nio.file.Path;
 import java.util.List;
 
 @Component
@@ -58,6 +64,21 @@ public class FilmDAO {
         filmAndCountriesDAO.insertAllCountriesToFilm(film.getCountries(),newId);
 
         return "nice";
+    }
+
+
+    public String updateFilm(Film film) {
+        jdbcTemplate.update("UPDATE film SET film_name = ?, film_world_premiere_date = ?, film_duration = ?, film_age_rating = ?, film_image_path = ?, film_description = ? WHERE film_id = ?",new Object[]{film.getName(), film.getWorldPremiereDate(), film.getDuration(), film.getAgeRating(), film.getImagePath(), film.getDescription(),film.getId()});
+        filmAndGenresDAO.insertAllGenresToFilm(film.getGenres(),film.getId());
+        filmAndActorsDAO.insertAllActorsToFilm(film.getActors(),film.getId());
+        filmAndDirectorsDAO.insertAllDirectorsToFilm(film.getDirectors(),film.getId());
+        filmAndCountriesDAO.insertAllCountriesToFilm(film.getCountries(),film.getId());
+        return "1";
+    }
+
+    public String deleteFilm(int id){
+        jdbcTemplate.update("DELETE FROM film WHERE film_id = ?;", new Object[]{id});
+        return "1";
     }
 
     public List<Film> getAllFilms(){
@@ -106,12 +127,20 @@ public class FilmDAO {
     }
 
     public Resource getImageByPath(String path){
-        System.out.println(imagesPath + "/" + path);
-        return resourceLoader.getResource(imagesPath + "/" + path);
+        System.out.println(imagesPath + "\\" + path);
+        return resourceLoader.getResource(imagesPath + "\\" + path);
+
+
+    }
+
+    public FileInputStream getImageAbsolute(String path) throws IOException {
+        File filePath = new File("c:/images/" + path);
+        FileInputStream file = new FileInputStream(filePath);
+        return file;
     }
 
     public String addImage(MultipartFile image) throws IOException {
-        System.out.println(resourceLoader.getResource(imagesPath).getFilename());
-        return FileUploadUtil.saveFile("src/main/resources/images",image.getOriginalFilename(),image);
+        return FileUploadUtil.saveFile(imagesPath,image.getOriginalFilename(),image);
     }
+
 }

@@ -5,11 +5,10 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.Getter;
 import lombok.Setter;
 import maxwaraxe.app.dao.ActorDAO;
+import maxwaraxe.app.models.Actor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @Component
 @RequestMapping(value = "/actors",produces = "application/json;charset=UTF-8")
@@ -26,5 +25,20 @@ public class ActorController {
     @GetMapping()
     public String getAllActors() throws JsonProcessingException {
         return objectMapper.writeValueAsString(actorDAO.getAllActors());
+    }
+
+    @PostMapping("update")
+    public String updateActor(@RequestBody Actor actor) throws JsonProcessingException {
+        return objectMapper.writeValueAsString(actorDAO.updateActor(actor));
+    }
+
+    @PostMapping("delete")
+    public String deleteActor(@RequestBody Actor actor) throws JsonProcessingException {
+        return objectMapper.writeValueAsString(actorDAO.deleteActor(actor));
+    }
+
+    @PostMapping("create")
+    public String createActor(@RequestBody Actor actor) throws JsonProcessingException {
+        return objectMapper.writeValueAsString(actorDAO.createActor(actor));
     }
 }

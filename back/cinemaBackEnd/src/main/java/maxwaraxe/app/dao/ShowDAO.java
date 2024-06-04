@@ -40,4 +40,17 @@ public class ShowDAO {
                 "SELECT * FROM show"
                 ,new BeanPropertyRowMapper<>(ShowShort.class));
     }
+
+    public String updateShow(ShowShort show) {
+        System.out.println(show.toString());
+        return String.valueOf(jdbcTemplate.update("UPDATE show SET show_id = ?, hall_number = ?,show_base_price = ?,show_duration = ?,show_datetime = ? WHERE show_id = ?",new Object[]{show.getShowId(),show.getHallNumber(),show.getShowBasePrice(),show.getShowDuration(),show.getShow_datetime(),show.getShowId()}));
+    }
+
+    public String createShow(ShowShort show) {
+        return String.valueOf(jdbcTemplate.update("INSERT INTO show (hall_number,film_id,show_base_price,show_duration,show_datetime) VALUES (?,?,?,?,?)", new Object[]{show.getHallNumber(),show.getFilmId(),show.getShowBasePrice(),show.getShowDuration(),show.getShow_datetime()}));
+    }
+
+    public String deleteShow(ShowShort show) {
+        return String.valueOf(jdbcTemplate.update("DELETE FROM show WHERE show_id = ?", new Object[]{show.getShowId()}));
+    }
 }

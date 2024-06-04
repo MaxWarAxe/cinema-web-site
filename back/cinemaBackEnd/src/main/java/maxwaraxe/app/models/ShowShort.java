@@ -1,10 +1,7 @@
 package maxwaraxe.app.models;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 import java.sql.Timestamp;
 
@@ -12,11 +9,12 @@ import java.sql.Timestamp;
 @Getter
 @NoArgsConstructor
 @AllArgsConstructor
+@ToString
 public class ShowShort {
     private int showId;
     private int hallNumber;
     private int filmId;
-    private float showBasePrice;
+    private int showBasePrice;
     private int showDuration;
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm")
     private Timestamp show_datetime;

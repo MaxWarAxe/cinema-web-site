@@ -58,6 +58,7 @@ import axios from 'axios';
 import serverUrl from '@/config';
 import router from '@/router/router';
 import Seat from '@/components/Seat.vue';
+import getRole from '@/role';
 import ButtonCustom from '@/components/ButtonCustom.vue';
 
 let show = ref()
@@ -69,17 +70,24 @@ let pickedSeatList = ref([])
 let seatsList = ref([])
 let seatsListFor = ref([])
 let sumTicketPrice = ref()
-
+let role = ref()
+setInterval(
+  () => {role.value = getRole()},
+  100
+);
 let rows = ref('')
 let numbers = ref('')
 
 function getSumTicketPrice() {
     let sum = 0
     pickedSeatList.value.forEach((obj) => sum += show.value.basePrice * obj.coefficient)
+    sum = Math.round(sum)
     return sum
 }
 
 function buyTickets() {
+    if(role.value != 3)
+        return
     for (let i = 0; i < pickedSeatList.value.length; i++) {
         axios({
             method: 'post',

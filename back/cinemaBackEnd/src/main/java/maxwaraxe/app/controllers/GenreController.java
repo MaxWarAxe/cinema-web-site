@@ -5,12 +5,10 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.Getter;
 import lombok.Setter;
 import maxwaraxe.app.dao.GenreDAO;
+import maxwaraxe.app.models.Genre;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -29,5 +27,20 @@ public class GenreController {
     @GetMapping()
     public String getAllGenres() throws JsonProcessingException {
        return objectMapper.writeValueAsString(genreDAO.getAllGenres());
+    }
+
+    @PostMapping("update")
+    public String updateGenre(@RequestBody Genre genre) throws JsonProcessingException {
+        return objectMapper.writeValueAsString(genreDAO.updateGenre(genre));
+    }
+
+    @PostMapping("delete")
+    public String deleteGenre(@RequestBody Genre genre) throws JsonProcessingException {
+        return objectMapper.writeValueAsString(genreDAO.deleteGenre(genre));
+    }
+
+    @PostMapping("create")
+    public String createGenre(@RequestBody Genre genre) throws JsonProcessingException {
+        return objectMapper.writeValueAsString(genreDAO.createGenre(genre));
     }
 }

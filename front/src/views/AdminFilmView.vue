@@ -43,16 +43,13 @@
                                     <v-text-field v-model="editedItem.description" label="Описание"></v-text-field>
                                 </v-row>
                                 <v-row>
-                                    <v-select multiple v-model="editedItem.actors" item-title="nameAndSurname" item-value="id" :items="allActors" label="Актеры"></v-select>
+                                    <v-select multiple v-model="editedItem.actors" item-value="id" item-title="nameAndSurname"  :items="allActors" label="Актеры"></v-select>
                                 </v-row>
                                 <v-row>
-                                    <v-select multiple v-model="editedItem.directors" item-title="nameAndSurname" item-value="id" :items="allDirectors" label="Режиссеры"></v-select>
+                                    <v-select multiple v-model="editedItem.directors" item-value="id" item-title="nameAndSurname"  :items="allDirectors" label="Режиссеры"></v-select>
                                 </v-row>
                                 <v-row>
                                     <v-file-input accept="image/*" v-model="editedItem.imagePath" label="Картинка"></v-file-input>
-                                </v-row>
-                                <v-row>
-                                    <v-text-field v-model="editedItem.imagePath" label="Описание"></v-text-field>
                                 </v-row>
                             </v-container>
                         </v-card-text>
@@ -125,6 +122,7 @@ import axios from 'axios';
 import serverUrl from '@/config';
 import { VDateInput } from 'vuetify/labs/VDateInput'
 import { reactive } from 'vue';
+import { VToolbarItems } from 'vuetify/lib/components/index.mjs';
 
 let route = useRoute()
 let loaded = ref(false)
@@ -140,11 +138,12 @@ let allActors = ref([])
 let allDirectors = ref([])
 let allCountries = ref([])
 let editedItem = ref({
-    name: '',
+    id: 0,
+    name: [],
     genres: [],
-    worldPremiereDate: 0,
+    worldPremiereDate: new Date(),
     duration: 0,
-    description: 0,
+    description: '',
     ageRating: 0,
     actors: [],
     countries:[],
@@ -152,14 +151,15 @@ let editedItem = ref({
     imagePath: "",
 })
 let defaultItem = ref({
+    id : 0,
     name: '',
     genres: [],
     worldPremiereDate: new Date(),
-    duration: '',
+    duration: 0,
     description: '',
     ageRating: '',
     actors: [],
-    countries:[],
+    countries: [],
     directors: [],
     imagePath: "",
 })
@@ -195,6 +195,8 @@ function editItem(item) {
 function deleteItem(item) {
     editedIndex.value = items.value.indexOf(item)
     editedItem.value = Object.assign({}, item)
+    console.log(item)
+
     dialogDelete.value = true
 }
 
@@ -211,8 +213,7 @@ function closeDelete() {
 }
 
 function deleteItemConfirm() {
-    items.value.splice(editedIndex.value, 1)
-    editedItem.value = Object.assign({}, defaultItem.value)
+    deleteFilm(editedItem)
     closeDelete()
 }
 
@@ -235,13 +236,29 @@ function saveImage(multiPartImage){
     });
 }
 
+function deleteFilm(item){
+    axios({
+        method: 'post',
+        url: serverUrl() + "/films/delete?id="+item.value.id,
+        headers: {
+            "Content-Type": "application/json",
+        },
+    })
+    .then(function (response) {
+        console.log(response.data);
+        getData()
+    })
+    .catch(function (error) {
+        console.log(error);
+    });
+}
+
 function addNewFilm(item){
     const obj = Object.assign({},toRaw(item.value))
-    obj.directors = obj.directors.map((item)=>({id : item, nameAndSurname : ""}))
-    obj.actors = obj.actors.map((item)=>({id : item, nameAndSurname : ""}))
+    obj.directors = obj.directors.map((items)=>({id : items, nameAndSurname : ""}))
+    obj.actors = obj.actors.map((items)=>({id : items, nameAndSurname : ""}))
     saveImage(obj.imagePath)
     obj.imagePath = obj.imagePath.name
-    // obj.worldPremiereDate = obj.worldPremiereDate
     console.log(obj)
     axios({
         method: 'post',
@@ -260,13 +277,44 @@ function addNewFilm(item){
     });
 }
 
+function saveFilm(item){
+    const obj = Object.assign({},toRaw(item.value))
+    obj.directors = toRaw(obj.directors)
+    obj.actors = toRaw(obj.actors)
+    obj.directors = obj.directors.map((items)=>({id : items, nameAndSurname : ""}))
+    obj.actors = obj.actors.map((items)=>({id : items, nameAndSurname : ""}))
+    obj.countries = toRaw(obj.countries)
+    obj.genres = toRaw(obj.genres)
+    if(typeof obj.imagePath == File){
+        saveImage(obj.imagePath)
+        obj.imagePath = obj.imagePath.name
+    }
+   
+    // obj.worldPremiereDate = obj.worldPremiereDate
+    console.log(obj)
+    axios({
+        method: 'post',
+        url: serverUrl() + "/films/update",
+        headers: {
+            "Content-Type": "application/json",
+        },
+        data: obj,
+    })
+    .then(function (response) {
+        console.log(response.data);
+        getData()
+    })
+    .catch(function (error) {
+        console.log(error);
+    });
+}
+
 function save() {
     if (editedIndex.value > -1) {
-        Object.assign(items.value[editedIndex.value], editedItem.value)
+        saveFilm(editedItem)
     } else {
         console.log(editedItem.value)
         addNewFilm(editedItem)
-        items.value.push(editedItem.value)
     }
     
     editedIndex.value = -1

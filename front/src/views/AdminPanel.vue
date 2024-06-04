@@ -17,32 +17,32 @@ for (let i = 0; i < 20; i++) {
         <RouterLink to="/admin/films">
             <ButtonCustom class="buttonA" text="Редактировать фильмы" />
         </RouterLink>
-        <RouterLink to="/admin/director">
+        <RouterLink to="/admin/directors">
             <ButtonCustom class="buttonA" text="Редактировать режиссеров" />
         </RouterLink>
-        <RouterLink to="/admin/actor">
+        <RouterLink to="/admin/actors">
             <ButtonCustom class="buttonA" text="Редактировать актеров" />
         </RouterLink>
-        <RouterLink to="/admin/country">
+        <RouterLink to="/admin/countries">
             <ButtonCustom class="buttonA" text="Редактировать страны" />
         </RouterLink>
-        <RouterLink to="/admin/genre">
+        <RouterLink to="/admin/genres">
             <ButtonCustom class="buttonA" text="Редактировать жанры" />
         </RouterLink>
         <FilmSepLine class="mb-5" />
-        <RouterLink to="/admin/hall">
+        <RouterLink to="/admin/halls">
             <ButtonCustom class="buttonA" text="Редактировать залы" />
         </RouterLink>
-        <RouterLink to="/admin/tickets">
-            <ButtonCustom class="buttonA" text="Редактировать билеты" />
-        </RouterLink>
-        <RouterLink to="/admin/seat">
+    <!-- <RouterLink to="/admin/tickets"> -->
+            <!-- <ButtonCustom class="buttonA" text="Редактировать билеты" /> -->
+        <!-- </RouterLink> -->
+        <RouterLink to="/admin/seats">
             <ButtonCustom class="buttonA" text="Редактировать места" />
         </RouterLink>
 
 
         <FilmSepLine class="mb-5" />
-        <RouterLink to="/admin/account">
+        <RouterLink to="/admin/accounts">
             <ButtonCustom class="buttonA" text="Редактировать аккаунты сотрудников" />
         </RouterLink>
 

@@ -4,20 +4,23 @@
             <img class="logo" src="@/assets/images/logo.png" alt="logo">
             <ul class="w-full">
                 <li><a class="underline_effect">
-                        <RouterLink :to="'/shows/' + new Date().toLocaleDateString('en-CA')">Расписание</RouterLink>
+                        <RouterLink :to="'/shows/' + new Date().toLocaleDateString('en-CA')">РАСПИСАНИЕ</RouterLink>
                     </a></li>
                 <li><a class="underline_effect">
-                        <RouterLink to="/films">Фильмы</RouterLink>
+                        <RouterLink to="/films">ФИЛЬМЫ</RouterLink>
                     </a></li>
 
-                <li class="float-right"><a class="underline_effect">
-                        <RouterLink to="/login">Вход</RouterLink>
+                <li v-if="role >= 100" class="float-right"><a class="underline_effect">
+                        <RouterLink to="/login">ВХОД</RouterLink>
                     </a></li>
-                <li class="float-right"><a class="underline_effect">
-                        <RouterLink to="/admin">Админ панель</RouterLink>
+                    <li @click="unAuth" v-else class="float-right"><a class="underline_effect">
+                        <RouterLink to="/login">ВЫХОД</RouterLink>
                     </a></li>
-                <li class="float-right"><a class="underline_effect">
-                        <RouterLink to="/report">Отчеты</RouterLink>
+                <li v-if="role == 2" class="float-right"><a class="underline_effect">
+                        <RouterLink to="/admin">АДМИН ПАНЕЛЬ</RouterLink>
+                    </a></li>
+                <li v-if="role <= 1" class="float-right"><a class="underline_effect">
+                        <RouterLink to="/report">ОТЧЕТЫ</RouterLink>
                     </a></li>
 
             </ul>
@@ -26,7 +29,17 @@
 </template>
 
 <script setup>
-
+import getRole from '@/role';
+import {ref} from 'vue'
+const model = defineModel()
+let role = ref()
+function unAuth(){
+    localStorage.setItem("ROLE",100)
+}
+setInterval(
+  () => {role.value = getRole(); console.log(getRole())},
+  101
+);
 </script>
 
 <style scoped>

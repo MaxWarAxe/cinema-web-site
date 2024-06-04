@@ -1,10 +1,7 @@
 package maxwaraxe.app.models;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 import java.sql.Timestamp;
 
@@ -12,6 +9,7 @@ import java.sql.Timestamp;
 @Getter
 @NoArgsConstructor
 @AllArgsConstructor
+@ToString
 public class Show {
     private int id;
     private int hallNumber;

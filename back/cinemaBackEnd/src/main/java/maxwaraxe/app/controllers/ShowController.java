@@ -4,13 +4,11 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import maxwaraxe.app.dao.ShowDAO;
 import maxwaraxe.app.models.Show;
+import maxwaraxe.app.models.ShowShort;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.stereotype.Component;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.Date;
 import java.util.List;
@@ -38,6 +36,20 @@ public class ShowController {
     @GetMapping()
     public String getShows() throws JsonProcessingException {
         return objectMapper.writeValueAsString(showDAO.getAllShows());
+    }
+
+    @PostMapping("update")
+    public String updateShow(@RequestBody ShowShort show){
+        return showDAO.updateShow(show);
+    }
+
+    @PostMapping("create")
+    public String createShow(@RequestBody ShowShort show){
+        return showDAO.createShow(show);
+    }
+    @PostMapping("delete")
+    public String deleteShow(@RequestBody ShowShort show){
+        return showDAO.deleteShow(show);
     }
 
     @Autowired

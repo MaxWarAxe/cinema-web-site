@@ -12,16 +12,15 @@ import java.util.List;
 @NoArgsConstructor
 @ToString
 public class Film {
-    private int id;
+    private Integer id;
     private String name;
     private Date worldPremiereDate;
-    private int duration;
-    private int ageRating;
+    private Integer duration;
+    private Integer ageRating;
     private String imagePath;
     private String description;
     private List<String> genres = new ArrayList<String>();
     private List<Director> directors = new ArrayList<Director>();
     private List<Actor> actors = new ArrayList<Actor>();
     private List<String> countries = new ArrayList<String>();
-
 }

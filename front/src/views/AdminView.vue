@@ -65,10 +65,11 @@
 </template>
 
 <script setup>
-import { ref } from 'vue'
+import { ref,toRaw } from 'vue'
 import { useRoute } from 'vue-router';
 import axios from 'axios';
 import serverUrl from '@/config';
+import router from '@/router/router';
 let route = useRoute()
 let loaded = ref(false)
 let dialog = ref(false)
@@ -141,17 +142,73 @@ function closeDelete() {
 }
 
 function deleteItemConfirm() {
-    items.value.splice(editedIndex.value, 1)
-    editedItem.value = Object.assign({}, defaultItem.value)
+    deleteRequest(editedItem)
     closeDelete()
+}
+
+function createRequest(obj){
+    console.log(toRaw(obj.value))
+    axios({
+        method: 'post',
+        url: serverUrl() + "/" + route.params.name +"/create",
+        headers: {
+            "Content-Type": "application/json",
+        },
+        data: toRaw(obj.value),
+    })
+    .then(function (response) {
+        //console.log(response.data);
+        getData()
+    })
+    .catch(function (error) {
+        console.log(error);
+    });
+}
+
+function updateRequest(obj){
+    console.log(toRaw(obj.value))
+    axios({
+        method: 'post',
+        url: serverUrl() + "/" + route.params.name +"/update",
+        headers: {
+            "Content-Type": "application/json",
+        },
+        data: toRaw(obj.value),
+    })
+    .then(function (response) {
+        //console.log(response.data);
+        getData()
+    })
+    .catch(function (error) {
+        console.log(error);
+    });
+}
+
+function deleteRequest(obj){
+    console.log(toRaw(obj.value))
+    axios({
+        method: 'post',
+        url: serverUrl() + "/" + route.params.name +"/delete",
+        headers: {
+            "Content-Type": "application/json",
+        },
+        data: toRaw(obj.value),
+    })
+    .then(function (response) {
+        //console.log(response.data);
+        getData()
+    })
+    .catch(function (error) {
+        console.log(error);
+    });
 }
 
 function save() {
     mapModelArray()
     if (editedIndex.value > -1) {
-        Object.assign(items.value[editedIndex.value], editedItem.value)
+        updateRequest(editedItem);
     } else {
-        items.value.push(editedItem.value)
+        createRequest(editedItem);
     }
     close()
 }

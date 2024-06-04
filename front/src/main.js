@@ -25,4 +25,4 @@ const vuetify = createVuetify({
     directives,
 })
 
-createApp(App).use(router).use(vuetify,{iconfont:'mdi'}).mount('#app');
+const app = createApp(App).use(router).use(vuetify,{iconfont:'mdi'}).mount('#app');

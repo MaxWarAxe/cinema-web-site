@@ -1,14 +1,17 @@
 <template>
     <div>
-        <input  :placeholder="defaultText" class="bg-slate-900 p-2 text-cyan-50 border-solid border-white border-2 rounded-lg" :type="type">
+        <input :placeholder="defaultText" v-model="model" class="bg-slate-900 p-2 text-cyan-50 border-solid border-white border-2 rounded-lg" :type="type">
+
     </div>
 </template>
 
 <script setup>
     const props = defineProps({
         defaultText : String,
-        type : String
+        type : String,
+
     })
+    const model = defineModel({default:'1'})
 </script>
 
 <style scoped>
