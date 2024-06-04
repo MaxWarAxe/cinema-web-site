@@ -1,6 +1,10 @@
 package maxwaraxe.app.dao;
+import lombok.Getter;
+import lombok.Setter;
 import maxwaraxe.app.mappers.FilmMapper;
+import maxwaraxe.app.mappers.IdMapper;
 import maxwaraxe.app.models.Film;
+import maxwaraxe.app.utils.FileUploadUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.PropertySource;
@@ -8,26 +12,52 @@ import org.springframework.core.io.Resource;
 import org.springframework.core.io.ResourceLoader;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Component;
+import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
 
+import java.io.IOException;
 import java.util.List;
 
 @Component
 @PropertySource("classpath:config.properties")
+@Setter
+@Getter
 public class FilmDAO {
 
-    private final JdbcTemplate jdbcTemplate;
+    @Autowired
+    private JdbcTemplate jdbcTemplate;
+
+    @Autowired
     private ResourceLoader resourceLoader;
 
     @Value("${images.path}")
     private String imagesPath;
 
     @Autowired
-    public void setResourceLoader(ResourceLoader resourceLoader) {
-        this.resourceLoader = resourceLoader;
-    }
+    private FilmAndGenresDAO filmAndGenresDAO;
+
     @Autowired
-    public FilmDAO(JdbcTemplate jdbcTemplate) {
-        this.jdbcTemplate = jdbcTemplate;
+    private FilmAndActorsDAO filmAndActorsDAO;
+
+    @Autowired
+    private FilmAndDirectorsDAO filmAndDirectorsDAO;
+
+    @Autowired
+    private FilmAndCountriesDAO filmAndCountriesDAO;
+
+    @Autowired
+    private FileUploadUtil fileUploadUtil;
+
+    public String createNewFilm(Film film){
+        Integer newId = jdbcTemplate.query("INSERT INTO film (film_name,film_world_premiere_date,film_duration,film_age_rating,film_image_path,film_description)\n" +
+                "    VALUES (?,?,?,?,?,?) \n" +
+                "RETURNING film_id as id;", new Object[]{film.getName(), film.getWorldPremiereDate(), film.getDuration(), film.getAgeRating(), film.getImagePath(), film.getDescription()}, new IdMapper()).stream().findAny().orElse(null);
+        filmAndGenresDAO.insertAllGenresToFilm(film.getGenres(),newId);
+        filmAndActorsDAO.insertAllActorsToFilm(film.getActors(),newId);
+        filmAndDirectorsDAO.insertAllDirectorsToFilm(film.getDirectors(),newId);
+        filmAndCountriesDAO.insertAllCountriesToFilm(film.getCountries(),newId);
+
+        return "nice";
     }
 
     public List<Film> getAllFilms(){
@@ -78,5 +108,10 @@ public class FilmDAO {
     public Resource getImageByPath(String path){
         System.out.println(imagesPath + "/" + path);
         return resourceLoader.getResource(imagesPath + "/" + path);
+    }
+
+    public String addImage(MultipartFile image) throws IOException {
+        System.out.println(resourceLoader.getResource(imagesPath).getFilename());
+        return FileUploadUtil.saveFile("src/main/resources/images",image.getOriginalFilename(),image);
     }
 }

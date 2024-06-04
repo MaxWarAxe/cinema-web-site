@@ -22,29 +22,38 @@
                                     <v-text-field v-model="editedItem.name" label="Название"></v-text-field>
                                 </v-row>
                                 <v-row>
-                                    <v-date-input v-model="editedItem.film_premiere_date"
+                                    <v-text-field @keypress="numFilter(event)" type="number" v-model="editedItem.ageRating" label="Возрастной рейтинг"></v-text-field>
+                                </v-row>
+                                <v-row>
+                                    <v-date-input  v-model="editedItem.worldPremiereDate"
                                         label="Мировая премьера"></v-date-input>
                                 </v-row>
                                 <v-row>
-                                    <v-select multiple v-model="editedItem.film_genres" :items="allGenres" label="Жанры"></v-select>
+                                    <v-select multiple v-model="editedItem.genres" item-title="genreName" item-value="genreName" :items="allGenres" label="Жанры"></v-select>
                                 </v-row>
                                 <v-row>
-                                    <v-text-field v-model="editedItem.film_duration"
+                                    <v-select multiple v-model="editedItem.countries" item-title="countryName" item-value="countryName" :items="allCountries" label="Страны"></v-select>
+                                </v-row>
+
+                                <v-row>
+                                    <v-text-field @keypress="numFilter(event)" type="number" v-model="editedItem.duration"
                                         label="Длительность"></v-text-field>
                                 </v-row>
                                 <v-row>
-                                    <v-text-field v-model="editedItem.film_description" label="Описание"></v-text-field>
+                                    <v-text-field v-model="editedItem.description" label="Описание"></v-text-field>
                                 </v-row>
                                 <v-row>
-                                    <v-select multiple v-model="editedItem.film_actors" :items="allActors" label="Актеры"></v-select>
+                                    <v-select multiple v-model="editedItem.actors" item-title="nameAndSurname" item-value="id" :items="allActors" label="Актеры"></v-select>
                                 </v-row>
                                 <v-row>
-                                    <v-select multiple v-model="editedItem.film_directors" :items="allDirectors" label="Режиссеры"></v-select>
+                                    <v-select multiple v-model="editedItem.directors" item-title="nameAndSurname" item-value="id" :items="allDirectors" label="Режиссеры"></v-select>
                                 </v-row>
                                 <v-row>
-                                    <v-file-input v-model="editedItem.film_image" label="Картинка"></v-file-input>
+                                    <v-file-input accept="image/*" v-model="editedItem.imagePath" label="Картинка"></v-file-input>
                                 </v-row>
-
+                                <v-row>
+                                    <v-text-field v-model="editedItem.imagePath" label="Описание"></v-text-field>
+                                </v-row>
                             </v-container>
                         </v-card-text>
 
@@ -90,6 +99,13 @@
         <template v-slot:item.genres="{ item }">
             <span>{{ item.genres.join(", ") }}</span>
         </template>
+        <template v-slot:item.countries="{ item }">
+            <span>{{ item.countries.join(", ") }}</span>
+        </template>
+        <template v-slot:item.worldPremiereDate="{ item }">
+            <span>{{ item.worldPremiereDate.toLocaleDateString("ru") }}</span>
+        </template>
+        
         <template v-slot:item.imagePath="{ item }">
             <img :src="serverUrl() + '/films/image?path=' + item.imagePath" width="100px" alt="">
         </template>
@@ -103,10 +119,12 @@
 </template>
 
 <script setup>
-import { ref } from 'vue'
+import { ref,toRaw } from 'vue'
 import { useRoute } from 'vue-router';
 import axios from 'axios';
 import serverUrl from '@/config';
+import { VDateInput } from 'vuetify/labs/VDateInput'
+import { reactive } from 'vue';
 
 let route = useRoute()
 let loaded = ref(false)
@@ -117,30 +135,33 @@ let modelArray = ref([])
 let items = ref([])
 getData()
 
-let allGenres = ref(["a","b","c","d","e"])
-let allActors = ref(["a","b","c","d","e"])
-let allDirectors = ref(["a","b","c","d","e"])
+let allGenres = ref([])
+let allActors = ref([])
+let allDirectors = ref([])
+let allCountries = ref([])
 let editedItem = ref({
-    name: 'nadssqw',
-    genres: ["a", "b", "c"],
+    name: '',
+    genres: [],
     worldPremiereDate: 0,
     duration: 0,
     description: 0,
     ageRating: 0,
-    actors: ["a", "b", "c"],
-    directors: ["a", "b", "c"],
-    imagePath: "image",
+    actors: [],
+    countries:[],
+    directors: [],
+    imagePath: "",
 })
 let defaultItem = ref({
-    name: 'nadssqw',
-    genres: ["a", "b", "c"],
-    worldPremiereDate: 0,
-    duration: 0,
-    description: 0,
-    ageRating: 0,
-    actors: ["a", "b", "c"],
-    directors: ["a", "b", "c"],
-    imagePath: "image",
+    name: '',
+    genres: [],
+    worldPremiereDate: new Date(),
+    duration: '',
+    description: '',
+    ageRating: '',
+    actors: [],
+    countries:[],
+    directors: [],
+    imagePath: "",
 })
 
 
@@ -149,6 +170,7 @@ let headers = ref([
     { title: 'Назване', key: 'name' },
     { title: "Мировая премьера", key: "worldPremiereDate" },
     { title: "Жанры", key: "genres" },
+    { title: "Страны", key: "countries" },
     { title: "Длительность", key: "duration" },
     { title: "Описание", key: "description" },
     { title: "Возрастной рейтинг", key: "ageRating" },
@@ -159,33 +181,15 @@ let headers = ref([
 ])
 
 function mapAndClearModelArray() {
-    mapModelArray()
-    for (let i = 0; i < modelArray.value.length; i++) {
-        modelArray.value[i] = ''
-    }
+    editedIndex.value = -1
+    editedItem.value = Object.assign({},defaultItem.value)
 }
 
-function mapModelArray() {
-    let keys = Object.keys(defaultItem.value)
-    console.log(keys)
-    for (let i = 0; i < keys.length; i++) {
-        editedItem.value[keys[i]] = modelArray.value[i]
-    }
-}
-
-function mapFromItemToModelArray() {
-    let keys = Object.keys(defaultItem.value)
-    console.log(keys)
-    for (let i = 0; i < keys.length; i++) {
-        modelArray.value[i] = editedItem.value[keys[i]]
-    }
-}
 
 function editItem(item) {
     editedIndex.value = items.value.indexOf(item)
     editedItem.value = Object.assign({}, item)
     dialog.value = true
-    mapFromItemToModelArray()
 }
 
 function deleteItem(item) {
@@ -212,27 +216,74 @@ function deleteItemConfirm() {
     closeDelete()
 }
 
+function saveImage(multiPartImage){
+    let formData = new FormData()
+    formData.append("image",multiPartImage)
+    axios({
+        method: 'post',
+        url: serverUrl() + "/films/image/new",
+        headers: {
+            "Content-Type":'multipart/form-data',
+        },
+        data: formData,
+    })
+    .then(function (response) {
+        console.log(response.data);
+    })
+    .catch(function (error) {
+        console.log(error);
+    });
+}
+
+function addNewFilm(item){
+    const obj = Object.assign({},toRaw(item.value))
+    obj.directors = obj.directors.map((item)=>({id : item, nameAndSurname : ""}))
+    obj.actors = obj.actors.map((item)=>({id : item, nameAndSurname : ""}))
+    saveImage(obj.imagePath)
+    obj.imagePath = obj.imagePath.name
+    // obj.worldPremiereDate = obj.worldPremiereDate
+    console.log(obj)
+    axios({
+        method: 'post',
+        url: serverUrl() + "/films/new",
+        headers: {
+            "Content-Type": "application/json",
+        },
+        data: obj,
+    })
+    .then(function (response) {
+        console.log(response.data);
+        getData()
+    })
+    .catch(function (error) {
+        console.log(error);
+    });
+}
+
 function save() {
-    mapModelArray()
     if (editedIndex.value > -1) {
         Object.assign(items.value[editedIndex.value], editedItem.value)
     } else {
+        console.log(editedItem.value)
+        addNewFilm(editedItem)
         items.value.push(editedItem.value)
     }
+    
+    editedIndex.value = -1
     close()
 }
 
-function initHeaders() {
-    let headersStr = Object.keys(defaultItem.value)
-    let headersArray = []
-    for (let i = 0; i < headersStr.length; i++) {
-        headersArray.push({ title: headersStr[i], key: headersStr[i] })
-    }
-    headersArray.push({ title: 'Actions', key: 'actions', sortable: false })
-    console.log("4")
-    console.log(headersArray)
-    return headersArray
+function numFilter (evt) {
+      evt = (evt) ? evt : window.event;
+      let expect = evt.target.value.toString() + evt.key.toString();
+      
+      if (!/^[-+]?[0-9]*\.?[0-9]*$/.test(expect)) {
+        evt.preventDefault();
+      } else {
+        return true;
+      }
 }
+
 
 function initAfterGet() {
     loaded.value = true
@@ -248,7 +299,61 @@ function getFilms(){
     })
     .then(function (response) {
         console.log(response.data);
-        items.value = response.data;
+        items.value = response.data.map((item)=>setCorrectDate(item));
+    })
+    .catch(function (error) {
+        console.log(error);
+    });
+}
+function setCorrectDate(item){
+    item.worldPremiereDate = new Date(item.worldPremiereDate)
+    return item
+}
+function getGenres(){
+    axios({
+        method: 'get',
+        url: serverUrl() + "/genres",
+        headers: {
+            "Content-Type": "application/json",
+        }
+    })
+    .then(function (response) {
+        console.log(response.data);
+        allGenres.value = response.data;
+        
+    })
+    .catch(function (error) {
+        console.log(error);
+    });
+}
+function getCountries(){
+    axios({
+        method: 'get',
+        url: serverUrl() + "/countries",
+        headers: {
+            "Content-Type": "application/json",
+        }
+    })
+    .then(function (response) {
+        console.log(response.data);
+        allCountries.value = response.data;
+        
+    })
+    .catch(function (error) {
+        console.log(error);
+    });
+}
+function getActors(){
+    axios({
+        method: 'get',
+        url: serverUrl() + "/actors",
+        headers: {
+            "Content-Type": "application/json",
+        }
+    })
+    .then(function (response) {
+        console.log(response.data);
+        allActors.value = response.data;
         
     })
     .catch(function (error) {
@@ -256,21 +361,31 @@ function getFilms(){
     });
 }
 
-function getGenres(){
-
-}
-
-function getActors(){
-
-}
-
 function getDirectors(){
-
+    axios({
+        method: 'get',
+        url: serverUrl() + "/directors",
+        headers: {
+            "Content-Type": "application/json",
+        }
+    })
+    .then(function (response) {
+        console.log(response.data);
+        allDirectors.value = response.data;
+        
+    })
+    .catch(function (error) {
+        console.log(error);
+    });
 }
 
 function getData() {
     getFilms()
-    initAfterGet();
+    getActors()
+    getDirectors()
+    getCountries()
+    getGenres()
+    initAfterGet()
 }
 
 
