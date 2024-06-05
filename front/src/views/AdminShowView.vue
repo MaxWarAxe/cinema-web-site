@@ -18,9 +18,29 @@
 
                         <v-card-text>
                             <v-container>
-                                <v-row  v-for="(key, i) in Object.keys(defaultItem)" cols="12" md="4" sm="6">
-                                    <v-text-field v-if="key != 'id' && key != 'showId'" v-model="modelArray[i]" :label="key"></v-text-field>
+                                <v-row cols="12" md="4" sm="6">
+                                    <v-text-field v-model="modelArray[1]" label="Номер зала"></v-text-field>
                                 </v-row>
+                                <v-row cols="12" md="4" sm="6">
+                                    <v-select v-model="modelArray[2]" item-value="id" label="Фильм" item-title="name" :items="allFilms"></v-select>
+                                </v-row>
+                                <v-row cols="12" md="4" sm="6">
+                                    <v-text-field v-model="modelArray[3]" label="Базовая цена"></v-text-field>
+                                </v-row>
+                                <v-row cols="12" md="4" sm="6">
+                                    <v-text-field v-model="modelArray[4]" label="Длительность"></v-text-field>
+                                </v-row>
+                                <v-row cols="12" md="4" sm="6">
+                                    <div class="mr-10">Дата  </div>
+                                    <input
+                                        type="datetime-local"
+                                        v-model="modelArray[5]"
+                                        name="Дата"
+                                        label="Дата"
+                                        min="2018-06-07 00:00"
+                                        max="2025-06-14 00:00" />
+                                </v-row>
+                                
                             </v-container>
                         </v-card-text>
 
@@ -48,7 +68,6 @@
                 </v-dialog>
             </v-toolbar>
         </template>
-
         <template v-slot:item.actions="{ item }">
             <v-icon class="me-2" size="small" @click="editItem(item)">
                 mdi-pencil
@@ -56,6 +75,9 @@
             <v-icon size="small" @click="deleteItem(item)">
                 mdi-delete
             </v-icon>
+        </template>
+        <template v-slot:item.filmId="{item}">
+            <div>{{allFilms.find((elem)=>elem.id == item.filmId).name }}</div>
         </template>
         <template v-slot:no-data>
             <v-btn color="primary" @click="initialize">
@@ -71,15 +93,14 @@ import { useRoute } from 'vue-router';
 import axios from 'axios';
 import serverUrl from '@/config';
 import router from '@/router/router';
-import setHeader from '@/setHeaders'
 let route = useRoute()
 let loaded = ref(false)
 let dialog = ref(false)
 let editedIndex = ref()
 let dialogDelete = ref(false)
 let modelArray = ref([])
-
-
+let time = ref()
+let allFilms = ref()
 let editedItem = ref({
     name: '',
     calories: 0,
@@ -150,10 +171,11 @@ function deleteItemConfirm() {
 }
 
 function createRequest(obj){
+    obj.value.show_datetime = obj.value.show_datetime.replace("T"," ")
     console.log(toRaw(obj.value))
     axios({
         method: 'post',
-        url: serverUrl() + "/" + route.params.name +"/create",
+        url: serverUrl() + "/" + "shows" +"/create",
         headers: {
             "Content-Type": "application/json",
         },
@@ -169,10 +191,11 @@ function createRequest(obj){
 }
 
 function updateRequest(obj){
+    obj.value.show_datetime = obj.value.show_datetime.replace("T"," ")
     console.log(toRaw(obj.value))
     axios({
         method: 'post',
-        url: serverUrl() + "/" + route.params.name +"/update",
+        url: serverUrl() + "/" + "shows" +"/update",
         headers: {
             "Content-Type": "application/json",
         },
@@ -188,10 +211,11 @@ function updateRequest(obj){
 }
 
 function deleteRequest(obj){
+    obj.value.show_datetime = obj.value.show_datetime.replace("T"," ")
     console.log(toRaw(obj.value))
     axios({
         method: 'post',
-        url: serverUrl() + "/" + route.params.name +"/delete",
+        url: serverUrl() + "/" + "shows" +"/delete",
         headers: {
             "Content-Type": "application/json",
         },
@@ -207,6 +231,7 @@ function deleteRequest(obj){
 }
 
 function save() {
+
     mapModelArray()
     if (editedIndex.value > -1) {
         updateRequest(editedItem);
@@ -216,43 +241,53 @@ function save() {
     close()
 }
 
-function initHeaders() {
-    let headersStr = Object.keys(defaultItem.value)
-    let headersArray = []
-    for (let i = 0; i < headersStr.length; i++) {
-        if (headersStr[i] != 'id')
-            headersArray.push({ title: headersStr[i], key: headersStr[i] })
-    }
-    headersArray = setHeader(route.params.name)
-    console.log(headersArray)
-    headersArray.push({ title: 'Действия', key: 'actions', sortable: false })
-    console.log("4")
-    console.log(headersArray)
-    return headersArray
+function getFilms(){
+    axios({
+        method: 'get',
+        url: serverUrl() + "/films",
+        headers: {
+            "Content-Type": "application/json",
+        }
+    })
+    .then(function (response) {
+        console.log(response.data);
+        allFilms.value = response.data;
+        initAfterGet()
+    })
+    .catch(function (error) {
+        console.log(error);
+    });
 }
 
 function initAfterGet() {
 
     defaultItem.value = items.value[0]
     loaded.value = true;
-
-    headers.value = initHeaders()
 }
 
-let headers = ref()
+let headers = ref([
+    { title: 'Номер показа', key: 'showId' },
+    { title: 'Номер зала', key: 'hallNumber' },
+    { title: 'Фильм', key: 'filmId' },
+    { title: 'Стоимость', key: 'showBasePrice' },
+    { title: 'Продолжительность', key: 'showDuration' },
+    { title: 'Дата и время', key: 'show_datetime' },
+    { title: 'Действия', key: 'actions', sortable: false },
+])
 
 function getData() {
     axios({
         method: 'get',
-        url: serverUrl() + "/" + route.params.name,
+        url: serverUrl() + "/" + "shows",
         headers: {
             "Content-Type": "application/json",
         }
     })
         .then(function (response) {
             console.log(response.data);
+            getFilms()
             items.value = response.data;
-            initAfterGet()
+            
         })
         .catch(function (error) {
             console.log(error);

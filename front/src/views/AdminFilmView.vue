@@ -57,10 +57,10 @@
                         <v-card-actions>
                             <v-spacer></v-spacer>
                             <v-btn color="blue-darken-1" variant="text" @click="close">
-                                Cancel
+                                Отмена
                             </v-btn>
                             <v-btn color="blue-darken-1" variant="text" @click="save">
-                                Save
+                                Сохранить/Добавить
                             </v-btn>
                         </v-card-actions>
                     </v-card>
