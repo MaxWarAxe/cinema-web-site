@@ -49,9 +49,11 @@ axios({
 
 <style scoped>
 .panel {
-    width: 1200px;
+    width: 1300px;
     height: auto;
-    display: inline;
+    justify-content: space-between;
+    display: flex;
+    flex-wrap: wrap;
     padding-top: 25px;
 }
 </style>

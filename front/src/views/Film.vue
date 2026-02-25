@@ -3,42 +3,42 @@
         <div class="flex w-full mb-7">
             <img class="h-96 flex mr-4 rounded-xl" :src="serverUrl() + '/films/image?path=' + film.imagePath" alt="">
             <div>
-                <div class="text-white font-bold text-3xl mb-5">{{ film.name }}</div>
-                <div class="flex text-white mb-2">
+                <div class="text-black font-bold text-3xl mb-5">{{ film.name }}</div>
+                <div class="flex text-black mb-2">
                     <div class="mr-1 w-60">Жанры:</div>
                     <div>{{ film.genres.join(", ") }}</div>
                 </div>
-                <div class="flex text-white mb-2">
+                <div class="flex text-black mb-2">
                     <div class="mr-1 w-60">Режиссер:</div>
-                    <div>{{ film.directors.map((item)=>item.nameAndSurname).join(", ") }}</div>
+                    <div>{{film.directors.map((item) => item.nameAndSurname).join(", ")}}</div>
                 </div>
-                <div class="flex text-white mb-2">
+                <div class="flex text-black mb-2">
                     <div class="mr-1 w-60">В ролях:</div>
-                    <div>{{ film.actors.map((item)=>item.nameAndSurname).join(", ") }}</div>
+                    <div>{{film.actors.map((item) => item.nameAndSurname).join(", ")}}</div>
                 </div>
-                <div class="flex text-white mb-2">
+                <div class="flex text-black mb-2">
                     <div class="mr-1 w-60">Страна:</div>
                     <div>{{ film.countries.join(", ") }}</div>
                 </div>
-                <div class="flex text-white mb-2">
+                <div class="flex text-black mb-2">
                     <div class="mr-1 w-60">Продолжительность:</div>
                     <div>{{ getHM(film.duration) }}</div>
                 </div>
-                <div class="flex text-white mb-2">
+                <div class="flex text-black mb-2">
                     <div class="mr-1 w-60">Мировая премьера:</div>
                     <div>{{ film.worldPremiereDate }}</div>
                 </div>
             </div>
         </div>
         <div class="block">
-            <div class="text-white font-bold text-3xl mb-5">Описание фильма</div>
-            <div class="text-white inline break-words">
+            <div class="text-black font-bold text-3xl mb-5">Описание фильма</div>
+            <div class="text-black inline break-words">
                 {{ film.description }}
             </div>
         </div>
 
     </div>
-    <div class="text-white font-bold text-9xl mb-5" v-if="!found && loaded">Фильм не найден</div>
+    <div class="text-black font-bold text-9xl mb-5" v-if="!found && loaded">Фильм не найден</div>
 </template>
 
 <script setup>

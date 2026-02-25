@@ -1,15 +1,15 @@
 <template>
     <div ref="htelem" class="block p-20">
-        <h class="text-white mb-10 block text-3xl">Получить отчет о загруженности залов за определенный период времени
+        <h class="text-black mb-10 block text-3xl">Получить отчет о загруженности залов за определенный период времени
         </h>
         <div class="block justify-items-center mb-10">
             <div class="m-10">
-                <label class="text-white w-40 inline-block" for="start">Начальная дата:</label>
+                <label class="text-black w-40 inline-block" for="start">Начальная дата:</label>
                 <input v-model="dateStartRef" type="date" id="start" value="2018-07-22" min="2024-01-01"
                     max="2025-12-31" />
             </div>
             <div class="m-10">
-                <label class="text-white w-40 inline-block" for="start">Конечная дата:</label>
+                <label class="text-black w-40 inline-block" for="start">Конечная дата:</label>
                 <input v-model="dateEndRef" type="date" id="start" value="2018-07-22" min="2024-01-01"
                     max="2025-12-31" />
             </div>
@@ -27,7 +27,7 @@ import ButtonCustom from '@/components/ButtonCustom.vue';
 import axios from 'axios';
 import serverUrl from '@/config';
 import * as XLSX from 'xlsx';
-import { ref,toRaw } from 'vue'
+import { ref, toRaw } from 'vue'
 
 let dateStartRef = ref()
 let dateEndRef = ref()

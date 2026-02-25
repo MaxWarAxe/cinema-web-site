@@ -1,7 +1,6 @@
 <template>
     <header>
         <div class="header_container">
-            <img class="logo" src="@/assets/images/logo.png" alt="logo">
             <ul class="w-full">
                 <li><a class="underline_effect">
                         <RouterLink :to="'/shows/' + new Date().toLocaleDateString('en-CA')">РАСПИСАНИЕ</RouterLink>
@@ -13,7 +12,7 @@
                 <li v-if="role >= 100" class="float-right"><a class="underline_effect">
                         <RouterLink to="/login">ВХОД</RouterLink>
                     </a></li>
-                    <li @click="unAuth" v-else class="float-right"><a class="underline_effect">
+                <li @click="unAuth" v-else class="float-right"><a class="underline_effect">
                         <RouterLink to="/login">ВЫХОД</RouterLink>
                     </a></li>
                 <li v-if="role == 2" class="float-right"><a class="underline_effect">
@@ -30,15 +29,15 @@
 
 <script setup>
 import getRole from '@/role';
-import {ref} from 'vue'
+import { ref } from 'vue'
 const model = defineModel()
 let role = ref()
-function unAuth(){
-    localStorage.setItem("ROLE",100)
+function unAuth() {
+    localStorage.setItem("ROLE", 100)
 }
 setInterval(
-  () => {role.value = getRole(); console.log(getRole())},
-  101
+    () => { role.value = getRole(); console.log(getRole()) },
+    101
 );
 </script>
 
@@ -46,7 +45,7 @@ setInterval(
 header {
     width: auto;
     height: 100px;
-    background-color: rgb(24, 24, 27);
+    background-color: rgb(255, 255, 255);
     vertical-align: middle;
     display: flex;
     align-items: center;
@@ -56,7 +55,7 @@ header {
 .header_container {
     width: 1200px;
     height: 100px;
-    background-color: rgb(24, 24, 27);
+
     vertical-align: middle;
     display: flex;
     align-items: center;
@@ -74,12 +73,12 @@ ul {
 
 li {
     display: inline;
-    color: white;
+    color: rgb(0, 0, 0);
     margin-right: 20px;
 }
 
 .underline_effect {
-    color: white;
+    color: black;
     /* Цвет обычной ссылки */
     position: relative;
     cursor: pointer;
@@ -96,7 +95,7 @@ li {
     width: 0;
     height: 2px;
     /* Высота линии */
-    background-color: white;
+    background-color: rgb(12, 0, 0);
     /* Цвет подчеркивания при исчезании линии*/
     transition: width 0.2s;
     /* Время эффекта */
@@ -111,7 +110,7 @@ li {
     bottom: -3px;
     height: 2px;
     /* Высота линии */
-    background-color: white;
+    background-color: rgb(0, 0, 0);
     /* Цвет подчеркивания при появлении линии*/
     transition: width 0.5s;
     /* Время эффекта */
@@ -123,7 +122,7 @@ li {
 
 @keyframes pulse {
     from {
-        color: white;
+        color: black;
     }
 
     to {
@@ -134,6 +133,6 @@ li {
 
 
 .h_schedule {
-    color: white;
+    color: black;
 }
 </style>

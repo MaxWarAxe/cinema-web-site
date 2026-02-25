@@ -5,11 +5,11 @@
                 <img :src="serverUrl() + '/films/image?path=' + film.imagePath" alt="">
             </div>
             <div class="inline-block w-auto">
-                <div class="text-white text-3xl font-bold mt-5 mb-5">{{ film.name }}</div>
+                <div class="text-black text-3xl font-bold mt-5 mb-5">{{ film.name }}</div>
                 <div class="flex">
-                    <div class="info text-white text-xl flex">{{ show.date }}</div>
-                    <div class="info text-white text-xl flex">{{ show.hallNumber + ' зал' }}</div>
-                    <div class=" text-white text-xl flex">{{ show.hallType }}</div>
+                    <div class="info text-black text-xl flex">{{ show.date }}</div>
+                    <div class="info text-black text-xl flex">{{ show.hallNumber + ' зал' }}</div>
+                    <div class=" text-black text-xl flex">{{ show.hallType }}</div>
                 </div>
             </div>
         </div>
@@ -31,20 +31,20 @@
             </svg>
             <div class="grid m-auto mb-20">
                 <div v-for="(row, rowIndex) in rows" class="m-auto">
-                    <div class="inline-block w-10 h-10 text-3xl text-white mr-20">{{ rowIndex + 1 }}</div>
+                    <div class="inline-block w-10 h-10 text-3xl text-black mr-20">{{ rowIndex + 1 }}</div>
                     <Seat @clicked="onSeatClicked" v-for="(seat, seatIndex) in numbers" class="inline"
                         :number="seatIndex + 1" :row="rowIndex + 1"
                         :seat="seatsList.find((element) => element.seatNumber == seatIndex + 1 && element.rowNumber == rowIndex + 1)" />
-                    <div class="inline-block w-10 h-10 text-3xl text-white ml-20">{{ rowIndex + 1 }}</div>
+                    <div class="inline-block w-10 h-10 text-3xl text-black ml-20">{{ rowIndex + 1 }}</div>
                 </div>
             </div>
         </div>
-        <div v-if="pickedSeatList.length != 0" class="w-full h-auto bg-gray-900 p-5 mb-20">
-            <div class="text-white font-bold text-3xl mb-5">Ваши места</div>
+        <div v-if="pickedSeatList.length != 0" class="w-full h-auto bg-white p-5 mb-20">
+            <div class="text-black font-bold text-3xl mb-5">Ваши места</div>
             <div v-for="seat in pickedSeatList">
-                <div class="text-white font-bold text-3xl mb-5 inline-block"> {{ seat.rowNumber + ' ряд, ' +
-                    seat.seatNumber + ' место'}}</div>
-                <div class="text-white font-bold text-3xl mb-5 inline-block float-end">{{ 'Стоимость: ' +
+                <div class="text-black font-bold text-3xl mb-5 inline-block"> {{ seat.rowNumber + ' ряд, ' +
+                    seat.seatNumber + ' место' }}</div>
+                <div class="text-black font-bold text-3xl mb-5 inline-block float-end">{{ 'Стоимость: ' +
                     Math.round(show.basePrice * seat.coefficient) + ' Р' }}</div>
             </div>
             <ButtonCustom @click="buyTickets" :text="'Купить билеты за ' + getSumTicketPrice() + ' Р'"></ButtonCustom>
@@ -72,8 +72,8 @@ let seatsListFor = ref([])
 let sumTicketPrice = ref()
 let role = ref()
 setInterval(
-  () => {role.value = getRole()},
-  100
+    () => { role.value = getRole() },
+    100
 );
 let rows = ref('')
 let numbers = ref('')
@@ -86,7 +86,7 @@ function getSumTicketPrice() {
 }
 
 function buyTickets() {
-    if(role.value != 3)
+    if (role.value != 3)
         return
     for (let i = 0; i < pickedSeatList.value.length; i++) {
         axios({
@@ -212,7 +212,7 @@ getShow()
 .info::after {
     width: 2px;
     height: 26px;
-    background-color: white;
+    background-color: black;
     content: '';
     margin-left: 25px;
     margin-right: 25px;

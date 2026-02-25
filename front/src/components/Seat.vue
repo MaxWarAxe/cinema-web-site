@@ -14,7 +14,7 @@
                 </g>
             </g>
         </svg>
-        <div class="absolute numberleft w-10 h-10 text-white text-center text-sm">{{ number }}</div>
+        <div class="absolute numberleft w-10 h-10 text-black text-center text-sm">{{ number }}</div>
     </button>
 </template>
 
@@ -96,7 +96,7 @@ button:focus {
     }
 
     button {
-        background-color: white;
+        background-color: black;
     }
 }
 </style>

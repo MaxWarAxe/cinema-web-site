@@ -64,7 +64,6 @@ function getFilm() {
     width: 100%;
     height: 400px;
     display: flex;
-    flex-wrap: wrap;
     margin-bottom: 50px;
 }
 
@@ -85,8 +84,8 @@ function getFilm() {
     width: 35px;
     height: 25px;
     line-height: 25px;
-    background-color: rgb(17, 17, 17);
-    color: white;
+    background-color: rgb(255, 255, 255);
+    color: black;
     border: solid;
     border-radius: 5px;
     border-width: 1px;
@@ -96,7 +95,7 @@ function getFilm() {
 }
 
 .film_name {
-    color: white;
+    color: black;
     font-weight: bold;
     font-size: 20px;
     margin-bottom: 20px;
@@ -125,7 +124,7 @@ function getFilm() {
 }
 
 .time_and_money {
-    color: white;
+    color: black;
     border: solid;
     text-align: center;
     border-width: 2px;

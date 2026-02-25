@@ -57,7 +57,7 @@ getShows()
 <template>
 
     <div class="film_list">
-        <div class="mb-5 overflow-x-auto overflow-y-hidden whitespace-nowrap">
+        <div class="mb-5 overflow-x-auto overflow-y-hidden blackspace-nowrap">
             <RouterLink v-for="day in dateList" :to="day.toLocaleDateString('en-CA')">
                 <DayButton class="mr-7" :date="day" />
             </RouterLink>
@@ -68,7 +68,8 @@ getShows()
             <FilmCard :film-id="film[0]" :show-list="film[1]" />
             <FilmSepLine v-if="loaded" class="mb-10" />
         </div>
-        <div v-if="loaded && zeroShows" class="text-center text-3xl">Нет показов на этот день ({{ route.params.date }})
+        <div v-if="loaded && zeroShows" class="text-center text-3xl text-black">Нет показов на этот день ({{
+            route.params.date }})
         </div>
     </div>
 </template>

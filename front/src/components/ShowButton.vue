@@ -32,7 +32,7 @@ let props = defineProps({
 }
 
 .time_and_money {
-    color: white;
+    color: black;
     border: solid;
     text-align: center;
     border-width: 2px;

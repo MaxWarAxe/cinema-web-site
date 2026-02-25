@@ -2,10 +2,10 @@
     <div class="card cursor-pointer h-96 w-fit inline-block rounded-3xl relative">
         <img class="film_img rounded-3xl" draggable="false" :src="film_image_path" alt="">
         <div class="rect rounded-bl-3xl rounded-br-3xl pt-5">
-            <div class="text-white text-center font-bold text-lg mb-10">
+            <div class="text-black text-center font-bold text-lg mb-10">
                 {{ film_name }}
             </div>
-            <div class="text-white text-center text-lg genres">{{ film_genres.join(", ") }}</div>
+            <div class="text-black text-center text-lg genres">{{ film_genres.join(", ") }}</div>
         </div>
     </div>
 
@@ -40,7 +40,7 @@ const props = defineProps({
     width: 100%;
     height: 20%;
     top: 80%;
-    background-color: rgba(15, 23, 42, 0.9);
+    background-color: rgba(255, 255, 255, 0.9);
 
     transition: 0.2s;
 }
@@ -48,7 +48,7 @@ const props = defineProps({
 .card {
     transition: 0.2s;
     overflow: hidden;
-    white-space: nowrap;
+    black-space: nowrap;
 }
 
 .card:hover {

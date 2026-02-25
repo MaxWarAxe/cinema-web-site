@@ -1,20 +1,20 @@
 <template>
     <div class="block p-20">
-        <h class="text-white mb-10 block text-3xl">Получить отчет о прибыли показов с выбором фильма за определенный
+        <h class="text-black mb-10 block text-3xl">Получить отчет о прибыли показов с выбором фильма за определенный
             период времени</h>
         <div class="block justify-items-center mb-10">
             <div class="m-10">
-                <label class="text-white w-40 inline-block" for="start">Начальная дата:</label>
+                <label class="text-black w-40 inline-block" for="start">Начальная дата:</label>
                 <input v-model="dateStartRef" type="date" id="start" name="trip-start" value="2018-07-22"
                     min="2024-01-01" max="2025-12-31" />
             </div>
             <div class="m-10">
-                <label class="text-white w-40 inline-block" for="start">Конечная дата:</label>
+                <label class="text-black w-40 inline-block" for="start">Конечная дата:</label>
                 <input v-model="dateEndRef" type="date" id="start" name="trip-start" value="2018-07-22" min="2024-01-01"
                     max="2025-12-31" />
             </div>
             <div class="m-10">
-                <label class="text-white w-40 inline-block" for="start">Фильм:</label>
+                <label class="text-black w-40 inline-block" for="start">Фильм:</label>
                 <div class="inline-block w-52 h-10">
                     <v-select v-model="filmIdRef" class="inline h-2" :items="filmList" item-title="name"
                         item-value="id"></v-select>
@@ -31,7 +31,7 @@
 
 <script setup>
 import ButtonCustom from '@/components/ButtonCustom.vue';
-import { ref,toRaw } from 'vue'
+import { ref, toRaw } from 'vue'
 import * as XLSX from 'xlsx';
 import axios from 'axios';
 import serverUrl from '@/config';
