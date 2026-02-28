@@ -5,18 +5,18 @@
         <div class="block justify-items-center mb-10">
             <div class="m-10">
                 <label class="text-black w-40 inline-block" for="start">Начальная дата:</label>
-                <input v-model="dateStartRef" type="date" id="start" name="trip-start" value="2018-07-22"
-                    min="2024-01-01" max="2025-12-31" />
+                <input class="bg-black" v-model="dateStartRef" type="date" id="start" name="trip-start"
+                    value="2026-01-01" min="2026-01-01" max="2028-01-01" />
             </div>
             <div class="m-10">
                 <label class="text-black w-40 inline-block" for="start">Конечная дата:</label>
-                <input v-model="dateEndRef" type="date" id="start" name="trip-start" value="2018-07-22" min="2024-01-01"
-                    max="2025-12-31" />
+                <input class="bg-black" v-model="dateEndRef" type="date" id="start" name="trip-start" value="2026-01-01"
+                    min="2026-01-01" max="2028-01-01" />
             </div>
             <div class="m-10">
                 <label class="text-black w-40 inline-block" for="start">Фильм:</label>
-                <div class="inline-block w-52 h-10">
-                    <v-select v-model="filmIdRef" class="inline h-2" :items="filmList" item-title="name"
+                <div class="inline-block w-52 h-10 bg-black">
+                    <v-select v-model="filmIdRef" class="inline h-2 bg-black" :items="filmList" item-title="name"
                         item-value="id"></v-select>
                 </div>
             </div>

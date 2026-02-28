@@ -22,7 +22,8 @@
                                     <v-text-field v-model="modelArray[1]" label="Номер зала"></v-text-field>
                                 </v-row>
                                 <v-row cols="12" md="4" sm="6">
-                                    <v-select v-model="modelArray[2]" item-value="id" label="Фильм" item-title="name" :items="allFilms"></v-select>
+                                    <v-select v-model="modelArray[2]" item-value="id" label="Фильм" item-title="name"
+                                        :items="allFilms"></v-select>
                                 </v-row>
                                 <v-row cols="12" md="4" sm="6">
                                     <v-text-field v-model="modelArray[3]" label="Базовая цена"></v-text-field>
@@ -31,16 +32,11 @@
                                     <v-text-field v-model="modelArray[4]" label="Длительность"></v-text-field>
                                 </v-row>
                                 <v-row cols="12" md="4" sm="6">
-                                    <div class="mr-10">Дата  </div>
-                                    <input
-                                        type="datetime-local"
-                                        v-model="modelArray[5]"
-                                        name="Дата"
-                                        label="Дата"
-                                        min="2018-06-07 00:00"
-                                        max="2025-06-14 00:00" />
+                                    <div class="mr-10">Дата </div>
+                                    <input class="bg-black" type="datetime-local" v-model="modelArray[5]" name="Дата"
+                                        label="Дата" min="2026-01-01 00:00" max="2028-01-01 00:00" />
                                 </v-row>
-                                
+
                             </v-container>
                         </v-card-text>
 
@@ -76,8 +72,8 @@
                 mdi-delete
             </v-icon>
         </template>
-        <template v-slot:item.filmId="{item}">
-            <div>{{allFilms.find((elem)=>elem.id == item.filmId).name }}</div>
+        <template v-slot:item.filmId="{ item }">
+            <div>{{allFilms.find((elem) => elem.id == item.filmId).name}}</div>
         </template>
         <template v-slot:no-data>
             <v-btn color="primary" @click="initialize">
@@ -88,7 +84,7 @@
 </template>
 
 <script setup>
-import { ref,toRaw } from 'vue'
+import { ref, toRaw } from 'vue'
 import { useRoute } from 'vue-router';
 import axios from 'axios';
 import serverUrl from '@/config';
@@ -170,64 +166,64 @@ function deleteItemConfirm() {
     closeDelete()
 }
 
-function createRequest(obj){
-    obj.value.show_datetime = obj.value.show_datetime.replace("T"," ")
+function createRequest(obj) {
+    obj.value.show_datetime = obj.value.show_datetime.replace("T", " ")
     console.log(toRaw(obj.value))
     axios({
         method: 'post',
-        url: serverUrl() + "/" + "shows" +"/create",
+        url: serverUrl() + "/" + "shows" + "/create",
         headers: {
             "Content-Type": "application/json",
         },
         data: toRaw(obj.value),
     })
-    .then(function (response) {
-        //console.log(response.data);
-        getData()
-    })
-    .catch(function (error) {
-        console.log(error);
-    });
+        .then(function (response) {
+            //console.log(response.data);
+            getData()
+        })
+        .catch(function (error) {
+            console.log(error);
+        });
 }
 
-function updateRequest(obj){
-    obj.value.show_datetime = obj.value.show_datetime.replace("T"," ")
+function updateRequest(obj) {
+    obj.value.show_datetime = obj.value.show_datetime.replace("T", " ")
     console.log(toRaw(obj.value))
     axios({
         method: 'post',
-        url: serverUrl() + "/" + "shows" +"/update",
+        url: serverUrl() + "/" + "shows" + "/update",
         headers: {
             "Content-Type": "application/json",
         },
         data: toRaw(obj.value),
     })
-    .then(function (response) {
-        //console.log(response.data);
-        getData()
-    })
-    .catch(function (error) {
-        console.log(error);
-    });
+        .then(function (response) {
+            //console.log(response.data);
+            getData()
+        })
+        .catch(function (error) {
+            console.log(error);
+        });
 }
 
-function deleteRequest(obj){
-    obj.value.show_datetime = obj.value.show_datetime.replace("T"," ")
+function deleteRequest(obj) {
+    obj.value.show_datetime = obj.value.show_datetime.replace("T", " ")
     console.log(toRaw(obj.value))
     axios({
         method: 'post',
-        url: serverUrl() + "/" + "shows" +"/delete",
+        url: serverUrl() + "/" + "shows" + "/delete",
         headers: {
             "Content-Type": "application/json",
         },
         data: toRaw(obj.value),
     })
-    .then(function (response) {
-        //console.log(response.data);
-        getData()
-    })
-    .catch(function (error) {
-        console.log(error);
-    });
+        .then(function (response) {
+            //console.log(response.data);
+            getData()
+        })
+        .catch(function (error) {
+            console.log(error);
+        });
 }
 
 function save() {
@@ -241,7 +237,7 @@ function save() {
     close()
 }
 
-function getFilms(){
+function getFilms() {
     axios({
         method: 'get',
         url: serverUrl() + "/films",
@@ -249,14 +245,14 @@ function getFilms(){
             "Content-Type": "application/json",
         }
     })
-    .then(function (response) {
-        console.log(response.data);
-        allFilms.value = response.data;
-        initAfterGet()
-    })
-    .catch(function (error) {
-        console.log(error);
-    });
+        .then(function (response) {
+            console.log(response.data);
+            allFilms.value = response.data;
+            initAfterGet()
+        })
+        .catch(function (error) {
+            console.log(error);
+        });
 }
 
 function initAfterGet() {
@@ -287,7 +283,7 @@ function getData() {
             console.log(response.data);
             getFilms()
             items.value = response.data;
-            
+
         })
         .catch(function (error) {
             console.log(error);
